@@ -26,6 +26,8 @@ def run():
 
     peca = pygame.Rect(x, y, tl, ta)
 
+
+
     sair = False
     while sair == False:
         for event in pygame.event.get():
@@ -52,7 +54,10 @@ def run():
             count += 5
         pygame.display.update()
 
+
+
     pygame.quit()
+
 
 
 run()
