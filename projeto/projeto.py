@@ -1,5 +1,5 @@
 import pygame
-
+import random
 
 def run():
     pygame.init()
@@ -24,15 +24,30 @@ def run():
     area_jogo_placar = pygame.Surface((265, 710))
     area_jogo_placar.fill(cor_azulado)
 
-    peca = pygame.Rect(x, y, tl, ta)
+    limite_esquerdo = pygame.Rect(0, 5, 5, 710)
+    limite_direito = pygame.Rect(805, 5, 5, 710)
+    limite_inferior = pygame.Rect(0, 715, 810, 5)
+    limite_superior = pygame.Rect(0, 0, 810, 5)
 
+
+    peca1 = pygame.Rect(x, y, 90, 30)
+    peca2 = pygame.Rect(x, y, 30, 30)
+    peca3 = pygame.Rect(x, y, 10, 10)
+    pecas = [peca1, peca2, peca3]
+    proxima_peca = random.choice(pecas)
+    peca = proxima_peca
 
 
     sair = False
     while sair == False:
+        # if fim_da_tela == 0:
+        #     peca = proxima_peca
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sair = True
+
+
 
             if event.type == pygame.KEYDOWN and fim_da_tela != count:
                 if event.key == pygame.K_LEFT:
@@ -41,10 +56,19 @@ def run():
                     peca.move_ip(ta, 0)
                 # if event.key == pygame.K_UP:
                 #     peca = pygame.transform.rotate(peca90)
+
+
         relogio.tick(29)
         tela.blit(area_jogo_pecas, [5, 5])
         tela.blit(area_jogo_placar, [810, 5])
+
+        pygame.draw.rect(tela, cor_amarela, limite_direito)
+        pygame.draw.rect(tela, cor_amarela, limite_esquerdo)
+        pygame.draw.rect(tela, cor_amarela, limite_superior)
+        pygame.draw.rect(tela, cor_amarela, limite_inferior)
+
         pygame.draw.rect(tela, cor_vermelha, peca)
+
         y = 5
 
         if count != fim_da_tela:
@@ -52,6 +76,8 @@ def run():
             peca = peca.move(0, y)
             y += 5
             count += 5
+        # else:
+        #     count = 0
         pygame.display.update()
 
 
