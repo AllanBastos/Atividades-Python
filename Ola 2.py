@@ -281,13 +281,7 @@ def desenhar_borda_tabulerio():
 
 
 
-def desenha_tabulerio(board):
-    pygame.draw.rect(TELA, cor_bg, (margemx, parte_superior, TAMANHO_BLOCO * LARGURA_TABULEIRO, TAMANHO_BLOCO * ALTURA_TABULERIO))
-    for x in range(LARGURA_TABULEIRO):
-        for y in range(ALTURA_TABULERIO):
-            if board[x][y] != EM_BRANCO:
-                pixelx, pixely = converter_pixels(x, y)
-                pygame.draw.rect(TELA, cor_peca[board[x][y]], (pixelx + 1, pixely + 1, TAMANHO_BLOCO - 1, TAMANHO_BLOCO - 1))
+
 
 
 def desenha_status(score, level):

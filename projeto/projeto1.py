@@ -41,6 +41,12 @@ EM_BRANCO = -1
 relogio = pygame.time.Clock()
 tem_peca = pygame.time.Clock()
 TAMANHO_BLOCO = 50
+LARGURA_TABULEIRO = 800
+ALTURA_TABULEIRO = 710
+
+
+margemx = int((LARGURA_JANELA - LARGURA_TABULEIRO * TAMANHO_BLOCO) / 2)
+parte_superior = (ALTURA_JANELA - (ALTURA_TABULEIRO * TAMANHO_BLOCO) - 5)
 
 
 for i in PECAS:
@@ -101,9 +107,11 @@ def atingiu_fundo(peca):
 
     peca_fixa = pygame.Rect(peca.x, peca.y, altp, larp)
 
+    return pygame.draw.rect(tela, cor_verde, peca_fixa)
 
-    return pygame.draw.rect(tela, cor_verde, peca_fixa
 
+def converter_pixels(x, y):
+    return (margemx  + (x * TAMANHO_BLOCO)), (710 + (y * TAMANHO_BLOCO))
 
 
 
@@ -119,10 +127,17 @@ def desenha_peca(piece, customCoords=(None, None)):
     for x in range(5):
         for y in range(5):
             if shapeToDraw[x][y] != EM_BRANCO:
-                pygame.draw.rect(tala, cor_peca[piece['cor']], (
+                pygame.draw.rect(tela, cor_peca[piece['cor']], (
                     pixelx + (x * TAMANHO_BLOCO) + 1, pixely + (y * TAMANHO_BLOCO) + 1, TAMANHO_BLOCO - 1,
                     TAMANHO_BLOCO - 1))
 
+def desenha_tabulerio(board):
+    pygame.draw.rect(TELA, cor_bg, (margemx, parte_superior, TAMANHO_BLOCO * LARGURA_TABULEIRO, TAMANHO_BLOCO * ALTURA_TABULERIO))
+    for x in range(LARGURA_TABULEIRO):
+        for y in range(ALTURA_TABULERIO):
+            if board[x][y] != EM_BRANCO:
+                pixelx, pixely = converter_pixels(x, y)
+                pygame.draw.rect(TELA, cor_peca[board[x][y]], (pixelx + 1, pixely + 1, TAMANHO_BLOCO - 1, TAMANHO_BLOCO - 1))
 
 
 def run():
@@ -133,10 +148,6 @@ def run():
     # tamanho
 
 
-    # limite_esquerdo = pygame.Surface((5, 710))
-    # limite_direito = pygame.Surface((5, 710))
-    # limite_inferior = pygame.Surface((810, 5))
-    # limite_superior = pygame.Surface((810, 5))
 
 
     sair = False
@@ -170,7 +181,8 @@ def run():
         pygame.draw.rect(tela, cor_amarela, limite_inferior)
 
 
-        pygame.draw.rect(tela, cor_vermelha, peca_atual)
+        # pygame.draw.rect(tela, cor_vermelha, peca_atual)
+        desenha_peca(peca_atual)
 
         y = 5
 
