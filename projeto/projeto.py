@@ -248,10 +248,10 @@ def precionando_botao():
     for event in pygame.event.get():
         if event.type == QUIT:
             terminando()
-        # if event.type == KEYUP:
-        #     if event.key == K_ESCAPE:
-        #         terminando()
-        #     return event.key
+        if event.type == KEYUP:
+            if event.key == K_ESCAPE:
+                terminando()
+            return event.key
     return None
 
 
