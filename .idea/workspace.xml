@@ -3,7 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="9c763c7c-4834-42b6-be3c-0dafbc4eae5d" name="Default Changelist" comment="">
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
       <change afterPath="$PROJECT_DIR$/ola.py" afterDir="false" />
+=======
+>>>>>>> Stashed changes
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/projeto/projeto.py" beforeDir="false" afterPath="$PROJECT_DIR$/projeto/projeto.py" afterDir="false" />
 =======
@@ -17,7 +20,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/Atividades$projeto.coverage" NAME="projeto Coverage Results" MODIFIED="1542047319305" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/projeto" />
+    <SUITE FILE_PATH="coverage/Atividades$projeto.coverage" NAME="projeto Coverage Results" MODIFIED="1542048353677" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/projeto" />
     <SUITE FILE_PATH="coverage/Atividades$ola.coverage" NAME="ola Coverage Results" MODIFIED="1542046798634" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="FUSProjectUsageTrigger">
@@ -61,17 +64,20 @@
       <usages-collector id="statistics.lifecycle.project">
         <counts>
           <entry key="project.open.time.17" value="1" />
-          <entry key="project.opened" value="1" />
+          <entry key="project.open.time.36" value="1" />
+          <entry key="project.opened" value="2" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="py" value="1575" />
+          <entry key="py" value="1733" />
+          <entry key="txt" value="39" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Python" value="1575" />
+          <entry key="PLAIN_TEXT" value="39" />
+          <entry key="Python" value="1733" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.js.language.service.starts" />
@@ -94,6 +100,7 @@
         <entry file="file://$PROJECT_DIR$/projeto/projeto.py">
           <provider selected="true" editor-type-id="text-editor">
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             <state relative-caret-position="345">
               <caret line="107" column="31" selection-start-line="107" selection-start-column="31" selection-end-line="107" selection-end-column="31" />
 =======
@@ -102,6 +109,10 @@
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
               </folding>
+>>>>>>> Stashed changes
+=======
+            <state relative-caret-position="450">
+              <caret line="99" column="44" lean-forward="true" selection-start-line="99" selection-start-column="44" selection-end-line="99" selection-end-column="44" />
 >>>>>>> Stashed changes
             </state>
           </provider>
@@ -186,9 +197,13 @@
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
 =======
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Issue.Navigation" />
+>>>>>>> Stashed changes
+=======
+    <property name="settings.editor.selected.configurable" value="settings.github" />
 >>>>>>> Stashed changes
   </component>
   <component name="RunDashboard">
@@ -306,15 +321,25 @@
       <option name="project" value="LOCAL" />
       <updated>1542042402489</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="transformando peça em em bjeto fixo">
+      <created>1542047363013</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1542047363013</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="ToolWindowManager">
 <<<<<<< Updated upstream
     <frame x="67" y="25" width="1853" height="950" extended-state="6" />
+<<<<<<< Updated upstream
     <editor active="true" />
 =======
     <frame x="-8" y="-8" width="1382" height="784" extended-state="6" />
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     <layout>
       <window_info content_ui="combo" id="Project" order="0" weight="0.5427196" />
@@ -390,7 +415,8 @@
     <option name="LOCAL_CHANGES_DETAILS_PREVIEW_SHOWN" value="true" />
     <MESSAGE value="Ola" />
     <MESSAGE value="Adicionando limites" />
-    <option name="LAST_COMMIT_MESSAGE" value="Adicionando limites" />
+    <MESSAGE value="transformando peça em em bjeto fixo" />
+    <option name="LAST_COMMIT_MESSAGE" value="transformando peça em em bjeto fixo" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -492,6 +518,7 @@
 <<<<<<< Updated upstream
         <state>
           <caret lean-forward="true" />
+<<<<<<< Updated upstream
 =======
         <state relative-caret-position="18">
           <caret line="28" column="40" selection-start-line="28" selection-start-column="40" selection-end-line="28" selection-end-column="40" />
@@ -499,13 +526,15 @@
           <folding>
             <element signature="e#3607#3620#0" expanded="true" />
           </folding>
+=======
+>>>>>>> Stashed changes
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/projeto/projeto.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="107" column="31" selection-start-line="107" selection-start-column="31" selection-end-line="107" selection-end-column="31" />
+        <state relative-caret-position="450">
+          <caret line="99" column="44" lean-forward="true" selection-start-line="99" selection-start-column="44" selection-end-line="99" selection-end-column="44" />
         </state>
       </provider>
     </entry>
