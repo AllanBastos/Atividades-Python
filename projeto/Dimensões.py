@@ -26,7 +26,7 @@ class Peca:
     def desce(self):
         for i in range(self.size):
             for j in range(self.size):
-                if tela.grade[self.y+1][self.x]*self.grade[i][j] != 0:
+                if TELA.grade[self.y + 1][self.x]*self.grade[i][j] != 0:
                     return 0
         self.y += 1
         return 1
