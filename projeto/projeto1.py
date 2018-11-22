@@ -1,30 +1,7 @@
 import pygame
 import random
 import time
-
-
-
-
-
-
-PECA_S = [['.....', '.....', '..OO.', '.OO..', '.....'], ['.....', '..O..', '..OO.', '...O.', '.....']]
-
-PECA_Z = [['.....', '.....', '.OO..', '..OO.', '.....'], ['.....', '..O..', '.OO..', '.O...', '.....']]
-
-PECA_I = [['..O..', '..O..', '..O..', '..O..', '.....'], ['.....', '.....', 'OOOO.', '.....', '.....']]
-
-PECA_O = [['.....', '.....', '.OO..', '.OO..', '.....']]
-
-PECA_J = [['.....', '.O...', '.OOO.', '.....', '.....'], ['.....', '..OO.', '..O..', '..O..', '.....'], ['.....', '.....', '.OOO.', '...O.', '.....'], ['.....', '..O..', '..O..', '.OO..', '.....']]
-
-PECA_L = [['.....', '...O.',  '.OOO.', '.....', '.....'], ['.....', '..O..', '..O..', '..OO.', '.....'], ['.....', '.....', '.OOO.', '.O...', '.....'], ['.....', '.OO..', '..O..', '..O..', '.....']]
-
-PECAS = {'S': PECA_S,
-         'Z': PECA_Z,
-         'I': PECA_I,
-         'O': PECA_O,
-         'J': PECA_J,
-         'L': PECA_L}
+from projeto.funcionalidades import *
 
 
 
@@ -35,7 +12,7 @@ y = 5
 
 ALTURA_JANELA = 720
 LARGURA_JANELA = 1080
-tela = pygame.display.set_mode([LARGURA_JANELA, ALTURA_JANELA])
+TELA = pygame.display.set_mode([LARGURA_JANELA, ALTURA_JANELA])
 pygame.display.set_caption('TETRIS')
 EM_BRANCO = -1
 relogio = pygame.time.Clock()
@@ -74,7 +51,7 @@ cor_peca = [cor_azulado, cor_vermelha, cor_verde, cor_amarela]
 
 cor_borda = cor_amarela
 cor_bg = cor_preta
-# pecas
+
 # areas do jogo
 area_jogo_pecas = pygame.Surface((800, 710))
 area_jogo_pecas.fill(cor_branca)
@@ -96,7 +73,7 @@ def nova_peca():
                  'rotacao': random.randint(0, len(PECAS[forma])-1),
                  'x': int(LARGURA_JANELA /2 )-2,
                  'y': -2,
-                 'cor': random.randint(0, len(cor_peca)-1) }
+                 'cor': random.randint(0, len(cor_peca)-1)}
     return nova_peca
 
 peca_atual = nova_peca()
@@ -107,7 +84,7 @@ def atingiu_fundo(peca):
 
     peca_fixa = pygame.Rect(peca.x, peca.y, altp, larp)
 
-    return pygame.draw.rect(tela, cor_verde, peca_fixa)
+    return pygame.draw.rect(TELA, cor_verde, peca_fixa)
 
 
 def converter_pixels(x, y):
@@ -127,14 +104,14 @@ def desenha_peca(piece, customCoords=(None, None)):
     for x in range(5):
         for y in range(5):
             if shapeToDraw[x][y] != EM_BRANCO:
-                pygame.draw.rect(tela, cor_peca[piece['cor']], (
+                pygame.draw.rect(TELA, cor_peca[piece['cor']], (
                     pixelx + (x * TAMANHO_BLOCO) + 1, pixely + (y * TAMANHO_BLOCO) + 1, TAMANHO_BLOCO - 1,
                     TAMANHO_BLOCO - 1))
 
 def desenha_tabulerio(board):
-    pygame.draw.rect(TELA, cor_bg, (margemx, parte_superior, TAMANHO_BLOCO * LARGURA_TABULEIRO, TAMANHO_BLOCO * ALTURA_TABULERIO))
+    pygame.draw.rect(TELA, cor_bg, (margemx, parte_superior, TAMANHO_BLOCO * LARGURA_TABULEIRO, TAMANHO_BLOCO * ALTURA_TABULEIRO))
     for x in range(LARGURA_TABULEIRO):
-        for y in range(ALTURA_TABULERIO):
+        for y in range(ALTURA_TABULEIRO):
             if board[x][y] != EM_BRANCO:
                 pixelx, pixely = converter_pixels(x, y)
                 pygame.draw.rect(TELA, cor_peca[board[x][y]], (pixelx + 1, pixely + 1, TAMANHO_BLOCO - 1, TAMANHO_BLOCO - 1))
@@ -162,41 +139,38 @@ def run():
             if event.type == pygame.QUIT:
                 sair = True
 
-            if event.type == pygame.KEYDOWN and not peca.colliderect(limite_inferior):
-                if event.key == pygame.K_LEFT and not peca.colliderect(limite_esquerdo):
-                    peca.move_ip(-30, 0)
-                if event.key == pygame.K_RIGHT and not peca.colliderect(limite_direito):
-                    peca.move_ip(30, 0)
-                if event.key == pygame.K_UP:
-                    peca = pygame.Rect(peca.x, peca.y, peca.height, peca.width)
+            # if event.type == pygame.KEYDOWN :
+                # if event.key == pygame.K_LEFT:
+                #     peca_atual.move_ip(-30, 0)
+                # if event.key == pygame.K_RIGHT:
+                #     peca_atual.move_ip(30, 0)
+                # if event.key == pygame.K_UP:
+                #     peca_atual = pygame.Rect(peca_atual.x, peca_atual.y, peca_atual.height, peca_atual.width)
 
 
         relogio.tick(29)
-        tela.blit(area_jogo_pecas, [5, 5])
-        tela.blit(area_jogo_placar, [810, 5])
+        TELA.blit(area_jogo_pecas, [5, 5])
+        TELA.blit(area_jogo_placar, [810, 5])
 
-        pygame.draw.rect(tela, cor_amarela, limite_direito)
-        pygame.draw.rect(tela, cor_amarela, limite_esquerdo)
-        pygame.draw.rect(tela, cor_amarela, limite_superior)
-        pygame.draw.rect(tela, cor_amarela, limite_inferior)
+        pygame.draw.rect(TELA, cor_amarela, limite_direito)
+        pygame.draw.rect(TELA, cor_amarela, limite_esquerdo)
+        pygame.draw.rect(TELA, cor_amarela, limite_superior)
+        pygame.draw.rect(TELA, cor_amarela, limite_inferior)
 
 
         # pygame.draw.rect(tela, cor_vermelha, peca_atual)
-        desenha_peca(peca_atual)
-
-        y = 5
-
-
+        if peca_atual != None:
+            desenha_peca(peca_atual)
+            peca_atual['y'] += 1
 
 
-        if not peca.colliderect(limite_inferior):
-            tem_peca.tick(15)
-            peca = peca.move(0, y)
-            y += 5
 
-        if peca.colliderect(limite_inferior):
-            atingiu_fundo(peca_atual)
-            peca_atual = None
+
+
+        #
+        # if atingiu_fundo():
+        #     atingiu_fundo(peca_atual)
+        #     peca_atual = None
 
 
 
