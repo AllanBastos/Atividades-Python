@@ -26,145 +26,52 @@ def main():
         pygame.mixer.music.stop()
         texto('Game Over')
 
+    terminar()
+
 def run():
 
-    pygame.init()
+    locked_position = {}
+    grade = criar_grade(locked_position)
 
-    tabuleiro = criar_novo_tabuleiro()
+    mudar_peca = False
 
+    peca_atual = pegar_forma()
+    proxima_peca = pegar_forma()
 
-    ultimo_tempo_queda = time.time()
-    movimeno_lateral = time.time()
-    ultimo_tempo = time.time()
+    relogio
+    fall_time = 0
 
-    movendo_baixo = False
-    movendo_esquerda = False
-    movendo_direita = False
-
-    score = 0
-    level = calcular_nivel(score)
-    freq_tempo = calcular_tempo(level)
-
-
-    peca_atual = nova_peca()
-    proxima_peca = nova_peca()
-
-    while True:
-
-        if peca_atual == None:
-            peca_atual = proxima_peca
-            proxima_peca = nova_peca()
-            ultimo_tempo = time.time()
-
-            if not posicao_valida(tabuleiro, peca_atual):
-                break
-
+    sair = True
+    while sair:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                terminar()
+                sair = False
 
-            elif event.type == KEYUP:
-                if event.type == K_p:
-                    TELA.fill(cor_bg)
-                    texto('PAUSE')
-                    ultimo_tempo_queda = time.time()
-                    movimeno_lateral = time.time()
-                    ultimo_tempo = time.time()
+            if event.type == pygame.KEYDOWN:
+                if pygame.key == esquerda:
+                    peca_atual.x -= 1
+                    if not posicao_valida(peca_atual, grade):
+                        peca_atual.x += 1
+                if pygame.key == direita:
+                    peca_atual.x += 1
+                    if not posicao_valida(peca_atual, grade):
+                        peca_atual.x -= 1
+                if pygame.key == baixo:
+                    peca_atual.y += 1
+                    if not posicao_valida(peca_atual, grade):
+                        peca_atual.y -= 1
+                if pygame.key == rodar:
+                    peca_atual.rotacao += 1
+                    if not posicao_valida(peca_atual, grade):
+                        peca_atual.rotacao -= 1
+                if pygame.key == rodar_contrario:
+                    peca_atual.rotacao -= 1
+                    if not posicao_valida(peca_atual, grade):
+                        peca_atual.rotacao += 1
 
-                if event.Key == K_RIGHT:
-                    movendo_direita = False
-                if event.Key == K_LEFT:
-                    movendo_esquerda = False
-                if event.Key == K_DOWN:
-                    movendo_baixo = False
+        desenhar_janela(TELA, grade)
 
-            elif event.type == KEYDOWN:
-                if event.Key == K_LEFT and posicao_valida(tabuleiro, peca_atual,  adjX=-1):
-                    peca_atual['x'] -= 1
-                    movimeno_lateral = time.time()
-                    movendo_esquerda = True
-                    movendo_direita = False
-                    movimeno_lateral = time.time()
-                if event.Key == K_RIGHT and posicao_valida(tabuleiro, peca_atual, adjX=1):
-                    peca_atual['x'] += 1
-                    movimeno_lateral = time.time()
-                    movendo_direita = True
-                    movendo_esquerda = False
-                    movimeno_lateral = time.time()
-                if event.Key == K_UP:
-                    peca_atual['rotacao'] = (peca_atual['rotacao'] + 1) % len(PECAS[peca_atual['forma']])
-                    if not posicao_valida(tabuleiro, peca_atual):
-                        peca_atual['rotacao'] = (peca_atual['rotacao'] - 1) % len(PECAS[peca_atual['forma']])
-                if event.Key == rodar_contrario:
-                    peca_atual['rotacao'] = (peca_atual['rotacao'] - 1) % len(PECAS[peca_atual['forma']])
-                    if not posicao_valida(tabuleiro, peca_atual):
-                        peca_atual['rotacao'] = (peca_atual['rotacao'] + 1) % len(PECAS[peca_atual['forma']])
-
-
-                if event.Key == K_DOWN:
-                    movendo_baixo = True
-                    if posicao_valida(tabuleiro, peca_atual, adjY=1):
-                        peca_atual['y'] += 1
-                    ultimo_tempo_queda = time.time()
-
-                if event.Key == descer_tudo:
-                    movendo_baixo = False
-                    movendo_esquerda = False
-                    movendo_direita = False
-                    for i in range(1, ALTURA_TABULEIRO):
-                        if not posicao_valida(tabuleiro, peca_atual, adjY=i):
-                            break
-
-                    peca_atual['y'] += (i - 1)
-
-                if event.type == sair:
-                    terminar()
-
-
-        if (movendo_direita or movendo_esquerda) and time.time() - movimeno_lateral > frequencia_movimento:
-            if movendo_esquerda and posicao_valida(tabuleiro, peca_atual, adjX=-1):
-                peca_atual['x'] -= 1
-            if movendo_direita and posicao_valida (tabuleiro, peca_atual, adjX=1):
-                peca_atual['x'] += 1
-            movimeno_lateral = time.time()
-
-        if movendo_baixo and time.time() - ultimo_tempo_queda > descer_freqiencia and posicao_valida(tabuleiro, peca_atual, adjY=1):
-            peca_atual['y'] += 1
-            ultimo_tempo_queda = time.time()
-
-
-        if time.time() - ultimo_tempo > freq_tempo:
-
-            if atingiu_fundo(tabuleiro, peca_atual):
-                add_no_tabuleiro(tabuleiro, peca_atual)
-                score += deletar_linhas_completas(tabuleiro)
-                level = calcular_nivel(score)
-                freq_tempo = calcular_tempo(level)
-                peca_atual = None
-
-            else:
-                peca_atual['y'] += 1
-                movimeno_lateral = time.time()
-
-
-        # TELA.blit(area_jogo_pecas, [5, 5])
-        desenha_tabulerio(tabuleiro)
-        desenha_borda()
-        # TELA.blit(area_jogo_placar, [810, 5])
-        # pygame.draw.rect(TELA, cor_amarela, limite_direito)
-        # pygame.draw.rect(TELA, cor_amarela, limite_esquerdo)
-        # pygame.draw.rect(TELA, cor_amarela, limite_superior)
-        # pygame.draw.rect(TELA, cor_amarela, limite_inferior)
-
-        if peca_atual != None:
-            desenha_peca(peca_atual)
-
-
-
-
-        pygame.display.update()
-        relogio.tick(FPS)
-
+    terminar()
 
 
 

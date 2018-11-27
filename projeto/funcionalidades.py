@@ -1,17 +1,25 @@
 import random
-
 import pygame
 import sys
 from pygame.locals import *
+
+# variaveis globais
 
 pygame.init()
 FPS = 25
 LARGURA_JANELA = 1080
 ALTURA_JANELA = 720
-TAMANHO_BLOCO = 30
-LARGURA_TABULEIRO = 20
-ALTURA_TABULEIRO = 20
+ALTURA_TABULEIRO = 800
+LARGURA_TABULEIRO = 500
+TAMANHO_BLOCO = 50
 EM_BRANCO = -1
+topo_esquerdo_x = (LARGURA_JANELA - LARGURA_TABULEIRO) // 2
+topo_esquerdo_y = ALTURA_JANELA - ALTURA_TABULEIRO
+
+# areas do jogo
+area_jogo_pecas = pygame.Surface((800, 710))
+area_jogo_placar = pygame.Surface((265, 710))
+
 
 frequencia_movimento = 0.15
 descer_freqiencia = 0.10
@@ -33,33 +41,20 @@ cor_bg = cor_preta
 
 fonte_basica = pygame.font.Font('freesansbold.ttf', 18)
 
-# areas do jogo
-area_jogo_pecas = pygame.Surface((800, 710))
-area_jogo_pecas.fill(cor_branca)
-area_jogo_placar = pygame.Surface((265, 710))
-area_jogo_placar.fill(cor_azulado)
 
-# limites area do jogo
 
-limite_esquerdo = pygame.Rect(0, 5, 5, 710)
-limite_direito = pygame.Rect(805, 5, 5, 710)
-limite_inferior = pygame.Rect(0, 715, 810, 5)
-limite_superior = pygame.Rect(0, 0, 810, 5)
+# # limites area do jogo
+#
+# limite_esquerdo = pygame.Rect(0, 5, 5, 710)
+# limite_direito = pygame.Rect(805, 5, 5, 710)
+# limite_inferior = pygame.Rect(0, 715, 810, 5)
+# limite_superior = pygame.Rect(0, 0, 810, 5)
 
 
 
+# formas das peças
 
-
-PECA_S = [['.....',
-           '.....',
-           '..OO.',
-           '.OO..',
-           '.....'],
-          ['.....',
-           '..O..',
-           '..OO.',
-           '...O.',
-           '.....']]
+PECA_S = [['.....', '.....', '..OO.', '.OO..', '.....'], ['.....', '..O..', '..OO.', '...O.', '.....']]
 
 PECA_Z = [['.....', '.....', '.OO..', '..OO.', '.....'], ['.....', '..O..', '.OO..', '.O...', '.....']]
 
@@ -67,9 +62,14 @@ PECA_I = [['..O..', '..O..', '..O..', '..O..', '.....'], ['.....', '.....', 'OOO
 
 PECA_O = [['.....', '.....', '.OO..', '.OO..', '.....']]
 
-PECA_J = [['.....', '.O...', '.OOO.', '.....', '.....'], ['.....', '..OO.', '..O..', '..O..', '.....'], ['.....', '.....', '.OOO.', '...O.', '.....'], ['.....', '..O..', '..O..', '.OO..', '.....']]
+PECA_J = [['.....', '.O...', '.OOO.', '.....', '.....'], ['.....', '..OO.', '..O..', '..O..', '.....'],
+          ['.....', '.....', '.OOO.', '...O.', '.....'], ['.....', '..O..', '..O..', '.OO..', '.....']]
 
-PECA_L = [['.....', '...O.',  '.OOO.', '.....', '.....'], ['.....', '..O..', '..O..', '..OO.', '.....'], ['.....', '.....', '.OOO.', '.O...', '.....'], ['.....', '.OO..', '..O..', '..O..', '.....']]
+PECA_L = [['.....', '...O.',  '.OOO.', '.....', '.....'], ['.....', '..O..', '..O..', '..OO.', '.....'],
+          ['.....', '.....', '.OOO.', '.O...', '.....'], ['.....', '.OO..', '..O..', '..O..', '.....']]
+
+formas = [PECA_S, PECA_Z, PECA_I, PECA_O, PECA_J, PECA_L]
+
 
 PECAS = {'S': PECA_S,
          'Z': PECA_Z,
@@ -78,18 +78,18 @@ PECAS = {'S': PECA_S,
          'J': PECA_J,
          'L': PECA_L}
 
-for i in PECAS:
-    for j in range(len(PECAS[i])):
-        dados_formato = []
-        for x in range(5):
-            coluna = []
-            for y in range(5):
-                if PECAS[i][j][y][x] == '.':
-                    coluna.append(EM_BRANCO)
-                else:
-                    coluna.append(1)
-            dados_formato.append(coluna)
-        PECAS[i][j] = dados_formato
+# for i in PECAS:
+#     for j in range(len(PECAS[i])):
+#         dados_formato = []
+#         for x in range(5):
+#             coluna = []
+#             for y in range(5):
+#                 if PECAS[i][j][y][x] == '.':
+#                     coluna.append(EM_BRANCO)
+#                 else:
+#                     coluna.append(1)
+#             dados_formato.append(coluna)
+#         PECAS[i][j] = dados_formato
 
 
 
@@ -97,13 +97,12 @@ for i in PECAS:
 pygame.init()
 # chaves
 pause = K_p and K_PAUSE
-esquerda = K_LEFT
-direita = K_RIGHT
-baixo = K_DOWN
-rodar = K_UP
-rodar_contrario = K_q
-sair = K_ESCAPE
-descer_tudo = K_SPACE
+esquerda = pygame.K_LEFT
+direita = pygame.K_RIGHT
+baixo = pygame.K_DOWN
+rodar = pygame.K_UP
+rodar_contrario = pygame.K_q
+descer_tudo = pygame.K_SPACE
 
 
 TELA = pygame.display.set_mode([LARGURA_JANELA, ALTURA_JANELA])
@@ -112,151 +111,48 @@ relogio = pygame.time.Clock()
 tem_peca = pygame.time.Clock()
 
 
-
-def calcular_nivel(pontos):
-    return int(pontos / 10) + 1
-
-
-def calcular_tempo(nivel):
-    return 0.27 - (nivel * 0.02)
-
-
-def nova_peca():
-    forma = random.choice(list(PECAS.keys()))
-    nova_peca = {'forma': forma,
-                 'rotacao': random.randint(0, len(PECAS[forma])-1),
-                 'x': int(LARGURA_JANELA /2)-2,
-                 'y': -2,
-                 'cor': random.randint(0, len(cor_peca)-1)}
-    return nova_peca
+class peca(object):
+    def __init__(self, x, y, forma):
+        self.x = x
+        self.y = y
+        self.forma = forma
+        self.cor = cor_peca[formas.index(forma)]
+        self.rotacao = 0
 
 
-def add_no_tabuleiro(tabuleiro, peca):
-    for x in range(5):
-        for y in range(5):
-            if PECAS[peca['forma']][peca['rotacao']][x][y] != EM_BRANCO:
-                tabuleiro[x + peca['x']][y + peca['y']] = peca['cor']
+def criar_grade(locked_pos={}):
+    grade = [[(0,0,0)for x in range (40)] for x in range (50)]
 
-
-def foi_precionado():
-    for event in pygame.event.get():
-        if event.type == QUIT:
-            terminar()
-        if event.type == KEYUP:
-            if event.key == K_ESCAPE:
-                terminar()
-            return event.key
-    return None
-
-
-def nova_borda():
-    tabuleiro = []
-    for i in range(LARGURA_TABULEIRO):
-        tabuleiro.append([EM_BRANCO] * ALTURA_TABULEIRO)
-    return tabuleiro
-
-
-def atingiu_fundo(tabuleiro, peca):
-    for x in range(5):
-        for y in range(5):
-            if PECAS[peca['forma']][peca['rotacao']][x][y] == EM_BRANCO or y + peca['y'] + 1 < 0:
-                continue
-            if y + peca['y'] + 1 == ALTURA_TABULEIRO:
-                return True
-            if tabuleiro[x + peca['x']][y + peca['y'] + 1] != EM_BRANCO:
-                return True
-    return False
-
-
-def esta_no_tabuleiro(x, y):
-    return x >= 0 and x < LARGURA_TABULEIRO and y < ALTURA_TABULEIRO
-
-
-def posicao_valida(board, piece, adjX=0, adjY=0):
-    for x in range(5):
-        for y in range(5):
-            if y + piece['y'] + adjY < 0 or PECAS[piece['forma']][piece['rotacao']][x][y] == EM_BRANCO:
-                continue
-            if not esta_no_tabuleiro(x + piece['x'] + adjX, y + piece['y'] + adjY):
-                return False
-            if board[x + piece['x'] + adjX][y + piece['y'] + adjY] != EM_BRANCO:
-                return False
-    return True
+    for i in range(len(grade)):
+        for j in range(len(grade[i])):
+            if (i, j) in locked_pos:
+                c = locked_pos[(j,i)]
+                grade = c
+    return grade
 
 
 
-def linhas_completas(tabuleiro, y):
-    for x in range(LARGURA_TABULEIRO):
-        if tabuleiro[x][y] == EM_BRANCO:
-            return False
-    return True
+def converter_formato():
+    pass
 
+def posicao_valida():
+    pass
 
-def deletar_linhas_completas(tabuleiro):
-    linhas_deletadas = 0
-    y = ALTURA_TABULEIRO - 1
-    while y >= 0:
-        if linhas_completas(tabuleiro, y):
-            # Remove the line and pull everything above it down by one line.
-            linhas_deletadas += 1
-            for pullDownY in range(y, 0, -1):
-                for x in range(LARGURA_TABULEIRO):
-                    tabuleiro[x][pullDownY] = tabuleiro[x][pullDownY - 1]
-            # Set very top line to blank.
-            for x in range(LARGURA_TABULEIRO):
-                tabuleiro[x][0] = EM_BRANCO
-        else:
-            y -= 1
-    return linhas_deletadas
+def check_lost():
+    pass
 
+def pegar_forma():
 
-def converter_pixels(x, y):
-    return (margemx + (x * TAMANHO_BLOCO)), (parte_superior + (y * TAMANHO_BLOCO))
+    return peca(5, 0, random.choice(formas))
 
+def desenha_grade(tela, grade):
+    for i in range(len(grade)):
+        for j in range(len(grade[i])):
+            pygame.draw.rect(TELA, grade[i][j], (topo_esquerdo_x + j * TAMANHO_BLOCO, topo_esquerdo_y + i*TAMANHO_BLOCO,
+                                                 TAMANHO_BLOCO, TAMANHO_BLOCO), 0)
 
-def desenha_borda():
-    pygame.draw.rect(TELA, cor_borda,
-                     (margemx - 3, parte_superior - 7, (LARGURA_TABULEIRO * TAMANHO_BLOCO) + 8, (ALTURA_TABULEIRO * TAMANHO_BLOCO) + 8), 5)
+    pygame.draw.rect(tela, (255, 0 ,0), (topo_esquerdo_x, topo_esquerdo_y, LARGURA_TABULEIRO, ALTURA_TABULEIRO), 4)
 
-
-def desenha_tabulerio(board):
-    # desenha_borda()
-    pygame.draw.rect(TELA, cor_bg,(margemx, parte_superior, TAMANHO_BLOCO * LARGURA_TABULEIRO,  TAMANHO_BLOCO * ALTURA_TABULEIRO))
-
-    for x in range(LARGURA_TABULEIRO):
-        for y in range(ALTURA_TABULEIRO):
-            if board[x][y] != EM_BRANCO:
-                pixelx, pixely = converter_pixels(x, y)
-                pygame.draw.rect(TELA, cor_peca[board[x][y]], (pixelx + 1, pixely + 1, TAMANHO_BLOCO - 1, TAMANHO_BLOCO - 1))
-
-
-
-
-def desenha_peca(piece, customCoords=(None, None)):
-    shapeToDraw = PECAS[piece['forma']][piece['rotacao']]
-    if customCoords == (None, None):
-
-        pixelx, pixely = converter_pixels(piece['x'], piece['y'])
-    else:
-        pixelx, pixely = customCoords
-
-        # draw each of the blocks that make up the piece
-    for x in range(5):
-        for y in range(5):
-            if shapeToDraw[x][y] != EM_BRANCO:
-                pygame.draw.rect(TELA, cor_peca[piece['cor']], (
-                    pixelx + (x * TAMANHO_BLOCO) + 1, pixely + (y * TAMANHO_BLOCO) + 1, TAMANHO_BLOCO - 1,
-                    TAMANHO_BLOCO - 1))
-
-
-
-
-
-def criar_novo_tabuleiro():
-    tabuleiro = []
-    for i in range(LARGURA_TABULEIRO):
-        tabuleiro.append([EM_BRANCO] * ALTURA_TABULEIRO)
-    return tabuleiro
 
 
 def texto(text):
@@ -280,13 +176,31 @@ def texto(text):
         relogio.tick()
 
 
+def foi_precionado():
+    for event in pygame.event.get():
+        if event.type == QUIT:
+            terminar()
+        if event.type == KEYUP:
+            if event.key == K_ESCAPE:
+                terminar()
+            return event.key
 
+def desenhar_janela(tela, grade):
+    tela.fill((0, 0, 0))
 
+    pygame.font.init()
+    fonte = pygame.font.SysFont('comicsans', 60)
+    rotulo = fonte.render('Tetris', 1, cor_branca)
+
+    tela.blit(rotulo, (topo_esquerdo_x + LARGURA_TABULEIRO / 2 - (rotulo.get_width() / 2), 30))
+
+    desenha_grade(tela, grade)
+
+    pygame.display.update()
 
 def terminar():
     pygame.quit()
     sys.exit()
-
 
 
 
