@@ -132,26 +132,57 @@ def criar_grade(locked_pos={}):
 
 
 
-def converter_formato():
-    pass
+def converter_formato(forma):
+    posicoes = []
+    formato = forma.forma[forma.rotacao % len(forma.forma)]
 
-def posicao_valida():
-    pass
+    for i, linhas in enumerate(formato):
+        fileira = list(linhas)
+        for j, colunas in enumerate(fileira):
+            if colunas == 'O':
+                posicoes.append((forma.x + j, forma.y + i))
 
-def check_lost():
-    pass
+        for i, pos in enumerate(posicoes):
+            posicoes[i] = (pos[0] - 1 , pos[1] - 4)
+
+
+def posicao_valida(forma, grade):
+    posica_aceita = [[(j, i )for j in range(40) if grade[i][j] == (0, 0, 0)] for i in range(50)]
+    posica_aceita = [j for sub in posica_aceita for j in sub]
+
+    formatado = converter_formato(forma)
+
+    for pos in formatado:
+        if pos not in posica_aceita:
+            if pos[1] > -1:
+                return False
+    return True
+
+
+def check_lost(posicoes):
+    for pos in posicoes:
+        x, y = pos
+
+        if y < 1:
+            return True
+    return False
+
+
 
 def pegar_forma():
 
     return peca(5, 0, random.choice(formas))
 
 def desenha_grade(tela, grade):
-    for i in range(len(grade)):
-        for j in range(len(grade[i])):
-            pygame.draw.rect(TELA, grade[i][j], (topo_esquerdo_x + j * TAMANHO_BLOCO, topo_esquerdo_y + i*TAMANHO_BLOCO,
-                                                 TAMANHO_BLOCO, TAMANHO_BLOCO), 0)
+    sx = topo_esquerdo_x
+    sy = topo_esquerdo_y
 
-    pygame.draw.rect(tela, (255, 0 ,0), (topo_esquerdo_x, topo_esquerdo_y, LARGURA_TABULEIRO, ALTURA_TABULEIRO), 4)
+    for i in range(len(grade)):
+        pygame.draw.line(tela, cor_amarela, (sx, sy +i * TAMANHO_BLOCO), (sx + LARGURA_TABULEIRO, sy + i * TAMANHO_BLOCO))
+        for j in range(len(grade[i])):
+            pygame.draw.line(tela, cor_amarela, (sx + j * TAMANHO_BLOCO, sy),
+                             (sx + j * TAMANHO_BLOCO, sy + ALTURA_TABULEIRO))
+
 
 
 
@@ -194,7 +225,13 @@ def desenhar_janela(tela, grade):
 
     tela.blit(rotulo, (topo_esquerdo_x + LARGURA_TABULEIRO / 2 - (rotulo.get_width() / 2), 30))
 
-    desenha_grade(tela, grade)
+    for i in range(len(grade)):
+        for j in range(len(grade[i])):
+            pygame.draw.rect(TELA, grade[i][j], (topo_esquerdo_x + j * TAMANHO_BLOCO, topo_esquerdo_y + i*TAMANHO_BLOCO,
+                                                 TAMANHO_BLOCO, TAMANHO_BLOCO), 0)
+
+    pygame.draw.rect(tela, (255, 0 ,0), (topo_esquerdo_x, topo_esquerdo_y, LARGURA_TABULEIRO, ALTURA_TABULEIRO), 4)
+
 
     pygame.display.update()
 

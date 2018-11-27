@@ -40,9 +40,24 @@ def run():
 
     relogio
     fall_time = 0
+    fall_speed = 0.27
+
 
     sair = True
     while sair:
+
+        grade = criar_grade(locked_position)
+        fall_time += relogio.get_rawtime()
+        relogio.tick()
+
+        if fall_time/ 1000 > fall_speed:
+            fall_time = 0
+            peca_atual.y += 1
+            if not (posicao_valida(peca_atual, grade)) and peca_atual.y > 0:
+                peca_atual -= 1
+                mudar_peca = True
+
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sair = False
@@ -69,7 +84,26 @@ def run():
                     if not posicao_valida(peca_atual, grade):
                         peca_atual.rotacao += 1
 
-        desenhar_janela(TELA, grade)
+        posicao_fomato = converter_formato(peca_atual)
+
+        for i in range(len(posicao_fomato)):
+            x, y = posicao_fomato[i]
+            if y > -1:
+                grade[x][y] = peca_atual.cor
+
+        if mudar_peca:
+            for pos in posicao_fomato:
+                p = (pos[0], pos[1])
+                locked_position[p] = peca_atual.cor
+
+            peca_atual = proxima_peca
+            proxima_peca = pegar_forma()
+            mudar_peca = False
+
+        if check_lost(locked_position):
+            sair = False
+
+
 
     terminar()
 
