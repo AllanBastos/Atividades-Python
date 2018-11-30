@@ -45,16 +45,16 @@ def run():
 
     sair = True
     while sair:
-
+        fall_speed = 0.27
         grade = criar_grade(locked_position)
         fall_time += relogio.get_rawtime()
         relogio.tick()
 
-        if fall_time/ 1000 > fall_speed:
+        if fall_time/1000 > fall_speed:
             fall_time = 0
             peca_atual.y += 1
             if not (posicao_valida(peca_atual, grade)) and peca_atual.y > 0:
-                peca_atual -= 1
+                peca_atual.y -= 1
                 mudar_peca = True
 
 
@@ -102,6 +102,9 @@ def run():
 
         if check_lost(locked_position):
             sair = False
+
+
+        desenhar_janela(TELA, grade)
 
 
 

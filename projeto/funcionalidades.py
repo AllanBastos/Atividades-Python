@@ -7,11 +7,11 @@ from pygame.locals import *
 
 pygame.init()
 FPS = 25
-LARGURA_JANELA = 1080
-ALTURA_JANELA = 720
-ALTURA_TABULEIRO = 800
-LARGURA_TABULEIRO = 500
-TAMANHO_BLOCO = 50
+LARGURA_JANELA = 800
+ALTURA_JANELA = 700
+ALTURA_TABULEIRO = 600
+LARGURA_TABULEIRO = 300
+TAMANHO_BLOCO = 30
 EM_BRANCO = -1
 topo_esquerdo_x = (LARGURA_JANELA - LARGURA_TABULEIRO) // 2
 topo_esquerdo_y = ALTURA_JANELA - ALTURA_TABULEIRO
@@ -35,7 +35,7 @@ cor_vermelha = (255, 0, 0)
 cor_amarela = (255, 255, 0)
 cor_preta = (0, 0, 0)
 
-cor_peca = [cor_azulado, cor_vermelha, cor_verde, cor_amarela]
+cor_peca = [(0, 255, 0), (255, 0, 0), (0, 255, 255), (255, 255, 0), (255, 165, 0), (0, 0, 255), (128, 0, 128)]
 cor_borda = cor_amarela
 cor_bg = cor_preta
 
@@ -54,7 +54,17 @@ fonte_basica = pygame.font.Font('freesansbold.ttf', 18)
 
 # formas das peças
 
-PECA_S = [['.....', '.....', '..OO.', '.OO..', '.....'], ['.....', '..O..', '..OO.', '...O.', '.....']]
+PECA_S = [['.....',
+           '.....',
+           '..OO.',
+           '.OO..',
+           '.....'],
+
+          ['.....',
+           '..O..',
+           '..OO.',
+           '...O.',
+           '.....']]
 
 PECA_Z = [['.....', '.....', '.OO..', '..OO.', '.....'], ['.....', '..O..', '.OO..', '.O...', '.....']]
 
@@ -68,7 +78,11 @@ PECA_J = [['.....', '.O...', '.OOO.', '.....', '.....'], ['.....', '..OO.', '..O
 PECA_L = [['.....', '...O.',  '.OOO.', '.....', '.....'], ['.....', '..O..', '..O..', '..OO.', '.....'],
           ['.....', '.....', '.OOO.', '.O...', '.....'], ['.....', '.OO..', '..O..', '..O..', '.....']]
 
-formas = [PECA_S, PECA_Z, PECA_I, PECA_O, PECA_J, PECA_L]
+PECA_T = [['.....', '.....', '..O..', '.OOO.', '.....'], ['.....','..O..','..OO.','..O..','.....'],
+          ['.....','.....','.OOO.', '..O..', ], ['.....','..O..', '.OO..', '..O..', '.....']]
+
+
+formas = [PECA_S, PECA_Z, PECA_I, PECA_O, PECA_J, PECA_L, PECA_T]
 
 
 PECAS = {'S': PECA_S,
@@ -76,7 +90,8 @@ PECAS = {'S': PECA_S,
          'I': PECA_I,
          'O': PECA_O,
          'J': PECA_J,
-         'L': PECA_L}
+         'L': PECA_L,
+         'T': PECA_T}
 
 # for i in PECAS:
 #     for j in range(len(PECAS[i])):
@@ -112,22 +127,24 @@ tem_peca = pygame.time.Clock()
 
 
 class peca(object):
-    def __init__(self, x, y, forma):
-        self.x = x
-        self.y = y
+    linha = 20
+    coluna = 10
+    def __init__(self, coluna, linha, forma):
+        self.x = coluna
+        self.y = linha
         self.forma = forma
         self.cor = cor_peca[formas.index(forma)]
         self.rotacao = 0
 
 
 def criar_grade(locked_pos={}):
-    grade = [[(0,0,0)for x in range (40)] for x in range (50)]
+    grade = [[(0, 0, 0)for x in range(10)] for x in range(20)]
 
     for i in range(len(grade)):
         for j in range(len(grade[i])):
             if (i, j) in locked_pos:
                 c = locked_pos[(j,i)]
-                grade = c
+                grade[i][j] = c
     return grade
 
 
@@ -137,17 +154,19 @@ def converter_formato(forma):
     formato = forma.forma[forma.rotacao % len(forma.forma)]
 
     for i, linhas in enumerate(formato):
-        fileira = list(linhas)
-        for j, colunas in enumerate(fileira):
+        linha = list(linhas)
+        for j, colunas in enumerate(linha):
             if colunas == 'O':
                 posicoes.append((forma.x + j, forma.y + i))
 
-        for i, pos in enumerate(posicoes):
-            posicoes[i] = (pos[0] - 1 , pos[1] - 4)
+    for i, pos in enumerate(posicoes):
+        posicoes[i] = (pos[0] - 1 , pos[1] - 4)
+
+    return posicoes
 
 
 def posicao_valida(forma, grade):
-    posica_aceita = [[(j, i )for j in range(40) if grade[i][j] == (0, 0, 0)] for i in range(50)]
+    posica_aceita = [[(j, i )for j in range(10) if grade[i][j] == (0, 0, 0)] for i in range(20)]
     posica_aceita = [j for sub in posica_aceita for j in sub]
 
     formatado = converter_formato(forma)
@@ -170,6 +189,7 @@ def check_lost(posicoes):
 
 
 def pegar_forma():
+    global cor_peca, formas
 
     return peca(5, 0, random.choice(formas))
 
