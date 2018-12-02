@@ -17,7 +17,7 @@ TAMANHO_BLOCO = 30
 
 topo_esquerdo_x = (LARGURA_JANELA - LARGURA_TABULEIRO) // 2
 topo_esquerdo_y = ALTURA_JANELA - ALTURA_TABULEIRO
-TELA = pygame.display.set_mode([LARGURA_JANELA,ALTURA_JANELA])
+TELA = pygame.display.set_mode([LARGURA_JANELA, ALTURA_JANELA])
 
 
 # areas do jogo
@@ -67,8 +67,10 @@ PECA_O = [['.....', '.....', '.OO..', '.OO..', '.....']]
 PECA_J = [['.....', '.O...', '.OOO.', '.....', '.....'], ['.....', '..OO.', '..O..', '..O..', '.....'],
           ['.....', '.....', '.OOO.', '...O.', '.....'], ['.....', '..O..', '..O..', '.OO..', '.....']]
 
-PECA_L = [['.....', '...O.',  '.OOO.', '.....', '.....'], ['.....', '..O..', '..O..', '..OO.', '.....'],
-          ['.....', '.....', '.OOO.', '.O...', '.....'], ['.....', '.OO..', '..O..', '..O..', '.....']]
+PECA_L = [['.....', '..O..', '..O..', '..OO.', '.....'], ['.....', '.....', '.OOO.', '.O...', '.....'],
+          ['.....', '.OO..', '..O..', '..O..', '.....'], ['.....', '...O.', '.OOO.', '.....', '.....']]
+
+
 
 PECA_T = [['.....', '.....', '..O..', '.OOO.', '.....'], ['.....','..O..','..OO.','..O..','.....'],
           ['.....','.....','.OOO.', '..O..', ], ['.....','..O..', '.OO..', '..O..', '.....']]
@@ -110,6 +112,7 @@ baixo = pygame.K_DOWN
 rodar = pygame.K_UP
 rodar_contrario = pygame.K_q
 descer_tudo = pygame.K_SPACE
+menu = pygame.K_TAB
 
 
 pygame.display.set_caption('TETRIS')
@@ -208,6 +211,7 @@ def remover_linhas(grade, locked):
             for j in range(len(linha)):
                 try:
                     del locked[(j, i)]
+
                 except:
                     continue
 
@@ -217,6 +221,7 @@ def remover_linhas(grade, locked):
                 if y < ind:
                     newkey = (x, y + inc)
                     locked[newkey] = locked.pop(key)
+    return inc
 
 def texto(text):
     titleFont = pygame.font.Font('freesansbold.ttf', 100)
@@ -237,6 +242,18 @@ def texto(text):
     while foi_precionado() == None:
         pygame.display.update()
         relogio.tick()
+
+
+def tela_inicial():
+    fundo = pygame.image.load('tetrismenu.jpg')
+    TELA.blit(fundo, (0, 0))
+
+    while foi_precionado() == None:
+        pygame.display.update()
+        relogio.tick()
+
+
+
 
 def textos(texto, size, cor, surface, posicaox, posicaoy, tipo):
     pygame.font.init()
@@ -294,17 +311,25 @@ def desenha_proxima_peca(forma, tela):
     tela.blit(titulo, (sx + 10, sy - 30))
 
 
-def nivel(pontos):
-    pass
+def calcular_nivel(pontos):
+    return int(pontos / 10) + 1
 
-def pontos(algo):
-    pass
+def frequencia_peca_n(nivel):
+    return 0.27 - (nivel * 0.02)
+
+def frequencia_peca_f():
+    return 0.27
+
+def frequencia_peca_d(nivel):
+    return 0.27 - (nivel * 0.05)
+
 
 def terminar():
     pygame.quit()
     sys.exit()
 
 def pausado():
+
     pausado = True
     while pausado:
         for event in pygame.event.get():
@@ -315,8 +340,58 @@ def pausado():
                 if event.key == pygame.K_SPACE:
                     pausado = False
 
+
+
             TELA.fill(cor_bg)
             textos('Pause', 100, cor_branca, TELA, int(LARGURA_JANELA / 2) - 130, int(ALTURA_JANELA / 2) - 100, 'comicsans')
             textos('Tecle \'ESPAÇO\'  para acontinuar', 30, cor_branca, TELA, int(LARGURA_JANELA / 2) - 200, int(ALTURA_JANELA / 2) + 25, 'freesansbold.ttf')
 
+        pygame.display.update()
+
+
+def pausado_nivel_facil():
+    pausado = True
+    while pausado:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                terminar()
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    pausado = False
+
+            TELA.set_colorkey()
+            textos('Pause', 100, cor_branca, TELA, int(LARGURA_JANELA / 2) - 130, int(ALTURA_JANELA / 2) - 100,
+                   'comicsans')
+            textos('Tecle \'ESPAÇO\'  para acontinuar', 30, cor_branca, TELA, int(LARGURA_JANELA / 2) - 200,
+                   int(ALTURA_JANELA / 2) + 25, 'freesansbold.ttf')
+
+        pygame.display.update()
+
+def multipos_textos(listatext, tela):
+    pygame.font.init()
+    fonte = pygame.font.SysFont('segoeprint', 30, bold=True)
+    texto1 = fonte.render(listatext[0], 1, cor_vermelha)
+    texto2 = fonte.render(listatext[1], 1, cor_vermelha)
+    texto3 = fonte.render(listatext[2], 1, cor_vermelha)
+
+    tela.blit(texto1, (80, 180))
+    tela.blit(texto2, (380, 290))
+    tela.blit(texto3, (100, 400))
+
+    textos('Precine \'ESPAÇO\' para jogar novamente', 30, cor_vermelha, TELA, int(LARGURA_JANELA / 2) - 300,int(ALTURA_JANELA / 2) + 50, 'segoeprint')
+
+    pygame.display.update()
+
+def desenhar_status(nivel, pontos):
+        scoreSurf = fonte_basica.render('Pontuação: {}' .format(pontos), True, cor_branca)
+        scoreRect = scoreSurf.get_rect()
+
+        scoreRect.topleft = (LARGURA_JANELA - 150, 20)
+        TELA.blit(scoreSurf, scoreRect)
+
+        # draw the level text
+        levelSurf = fonte_basica.render('Level: {}' .format(nivel), True, cor_branca)
+        levelRect = levelSurf.get_rect()
+        levelRect.topleft = (LARGURA_JANELA - 150, 50)
 
