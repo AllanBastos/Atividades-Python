@@ -408,9 +408,9 @@ def desenhar_status(nivel, pontos):
         scoreRect.topleft = (LARGURA_JANELA - 150, 20)
         TELA.blit(scoreSurf, scoreRect)
 
-        # draw the level text
+
         levelSurf = fonte_basica.render('Level: {}' .format(nivel), True, cor_branca)
         levelRect = levelSurf.get_rect()
         levelRect.topleft = (LARGURA_JANELA - 150, 50)
-
+        TELA.blit(levelSurf, levelRect)
         pygame.display.update()
