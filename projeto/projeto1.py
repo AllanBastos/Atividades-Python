@@ -49,12 +49,22 @@ def menu_jogar():
                 elif event.key == K_3:
                     iniciar_jogo(3)
 
-                elif event.key == pygame.K_4:
+                elif event.key == pygame.K_TAB:
                     menu_principal()
         pygame.display.update()
 
 def menu_ajuda():
-    pass
+    while True:
+        fundo = pygame.image.load('menuajuda.png')
+        TELA.blit(fundo, (0, 0))
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                terminar()
+
+            if event.type == pygame.KEYDOWN:  # Aqui ele faz o movimento da peca
+                if event.key == pygame.K_TAB:
+                    menu_principal()
+        pygame.display.update()
 
 
 def tela_inicial(nivel):
@@ -123,17 +133,17 @@ def run_facil():
                     terminar()
 
                 if event.type == pygame.KEYDOWN:                          # Aqui ele faz o movimento da peca
-                    if event.key == esquerda:                             # para a esquerda
+                    if event.key == esquerda or event.key == pygame.K_a:  # para a esquerda
                         peca_atual.x -= 1                                 # caso a posição não seja valida ele volta
                         if not posicao_valida(peca_atual, grade):         # imediatamente para posição anterio
                             peca_atual.x += 1
 
-                    elif event.key == direita:                             # movimento para direita
+                    elif event.key == direita or event.key == pygame.K_d:                             # movimento para direita
                         peca_atual.x += 1
                         if not posicao_valida(peca_atual, grade):
                             peca_atual.x -= 1
 
-                    elif event.key == rodar:                                                    # movimento rotacinal
+                    elif event.key == rodar or event.key == pygame.K_w:                                                    # movimento rotacinal
                         peca_atual.rotacao = peca_atual.rotacao + 1 % len(peca_atual.forma)     # para direita
                         if not posicao_valida(peca_atual, grade):
                             peca_atual.rotacao = peca_atual.rotacao - 1 % len(peca_atual.forma)
@@ -144,8 +154,8 @@ def run_facil():
                             peca_atual.rotacao = peca_atual.rotacao + 1 % len(peca_atual.forma)
 
 
-                    elif event.key == baixo:                            # se precinado o botão para baixo
-                        peca_atual.y += 1                               # ele desce uma casa rapidamente
+                    elif event.key == baixo or event.key == pygame.K_s:     # se precinado o botão para baixo
+                        peca_atual.y += 1                                   # ele desce uma casa rapidamente
                         if not posicao_valida(peca_atual, grade):
                             peca_atual.y -= 1
 
@@ -254,17 +264,17 @@ def run_normal():
                 terminar()
 
             if event.type == pygame.KEYDOWN:  # Aqui ele faz o movimento da peca
-                if event.key == esquerda:  # para a esquerda
+                if event.key == esquerda or event.key == pygame.K_a:  # para a esquerda
                     peca_atual.x -= 1  # caso a posição não seja valida ele volta
                     if not posicao_valida(peca_atual, grade):  # imediatamente para posição anterio
                         peca_atual.x += 1
 
-                elif event.key == direita:  # movimento para direita
+                elif event.key == direita or event.key == pygame.K_d:  # movimento para direita
                     peca_atual.x += 1
                     if not posicao_valida(peca_atual, grade):
                         peca_atual.x -= 1
 
-                elif event.key == rodar:  # movimento rotacinal
+                elif event.key == rodar or event.key == pygame.K_w:  # movimento rotacinal
                     peca_atual.rotacao = peca_atual.rotacao + 1 % len(peca_atual.forma)  # para direita
                     if not posicao_valida(peca_atual, grade):
                         peca_atual.rotacao = peca_atual.rotacao - 1 % len(peca_atual.forma)
@@ -275,7 +285,7 @@ def run_normal():
                         peca_atual.rotacao = peca_atual.rotacao + 1 % len(peca_atual.forma)
 
 
-                elif event.key == baixo:  # se precinado o botão para baixo
+                elif event.key == baixo or event.key == pygame.K_s:  # se precinado o botão para baixo
                     peca_atual.y += 1  # ele desce uma casa rapidamente
                     if not posicao_valida(peca_atual, grade):
                         peca_atual.y -= 1
@@ -383,30 +393,30 @@ def run_dificil():
             if event.type == pygame.QUIT:
                 terminar()
 
-            if event.type == pygame.KEYDOWN:  # Aqui ele faz o movimento da peca
-                if event.key == esquerda:  # para a esquerda
-                    peca_atual.x -= 1  # caso a posição não seja valida ele volta
-                    if not posicao_valida(peca_atual, grade):  # imediatamente para posição anterio
+            if event.type == pygame.KEYDOWN:                          # Aqui ele faz o movimento da peca
+                if event.key == esquerda or event.key == pygame.K_a:  # para a esquerda
+                    peca_atual.x -= 1                                 # caso a posição não seja valida ele volta
+                    if not posicao_valida(peca_atual, grade):         # imediatamente para posição anterio
                         peca_atual.x += 1
 
-                elif event.key == direita:  # movimento para direita
+                elif event.key == direita or event.key == pygame.K_d:  # movimento para direita
                     peca_atual.x += 1
                     if not posicao_valida(peca_atual, grade):
                         peca_atual.x -= 1
 
-                elif event.key == rodar:  # movimento rotacinal
+                elif event.key == rodar or event.key == pygame.K_w:                      # movimento rotacinal
                     peca_atual.rotacao = peca_atual.rotacao + 1 % len(peca_atual.forma)  # para direita
                     if not posicao_valida(peca_atual, grade):
                         peca_atual.rotacao = peca_atual.rotacao - 1 % len(peca_atual.forma)
 
                 elif event.key == rodar_contrario:
                     peca_atual.rotacao = peca_atual.rotacao - 1 % len(peca_atual.forma)  # movimento rotacinal
-                    if not posicao_valida(peca_atual, grade):  # para esquerda
+                    if not posicao_valida(peca_atual, grade):                            # para esquerda
                         peca_atual.rotacao = peca_atual.rotacao + 1 % len(peca_atual.forma)
 
 
-                elif event.key == baixo:  # se precinado o botão para baixo
-                    peca_atual.y += 1  # ele desce uma casa rapidamente
+                elif event.key == baixo or event.key == pygame.K_s:  # se precinado o botão para baixo
+                    peca_atual.y += 1                                # ele desce uma casa rapidamente
                     if not posicao_valida(peca_atual, grade):
                         peca_atual.y -= 1
 
