@@ -81,7 +81,6 @@ def convert_shape_format(shape):
             if column == 'O':
                 positions.append((shape.x + j, shape.y + i))
 
-
     for i, pos in enumerate(positions):
         positions[i] = (pos[0] - 2, pos[1] - 4)
 
@@ -121,7 +120,8 @@ def draw_text_middle(text, size, color, surface):
     label = font.render(text, 1, color)
 
     surface.blit(label, (
-    top_left_x + play_width / 2 - (label.get_width() / 2), top_left_y + play_height / 2 - label.get_height() / 2))
+    top_left_x + play_width / 2 -
+    (label.get_width() / 2), top_left_y + play_height / 2 - label.get_height() / 2))
 
 
 def draw_grid(surface, row, col):
@@ -168,9 +168,10 @@ def draw_next_shape(shape, surface):
 
     for i, line in enumerate(format):
         row = list(line)
-    for j, column in enumerate(row):
-        if column == '0':
-            pygame.draw.rect(surface, shape.color, (sx + j * 30, sy + i * 30, 30, 30), 0)
+        for j, column in enumerate(row):
+            if column == 'O':
+                pygame.draw.rect(surface, shape.color, (sx + j * 30, sy + i * 30, 30, 30), 0)
+
 
     surface.blit(label, (sx + 10, sy - 30))
 
@@ -255,38 +256,38 @@ def main():
                 current_piece.y -= 1
                 print(convert_shape_format(current_piece))'''  #
 
-    shape_pos = convert_shape_format(current_piece)
+        shape_pos = convert_shape_format(current_piece)
 
-    # add piece to the grid for drawing
-    for i in range(len(shape_pos)):
-        x, y = shape_pos[i]
-        if y > -1:
-            grid[y][x] = current_piece.color
+        # add piece to the grid for drawing
+        for i in range(len(shape_pos)):
+            x, y = shape_pos[i]
+            if y > -1:
+                grid[y][x] = current_piece.color
 
-    # IF PIECE HIT GROUND
-    if change_piece:
-        for pos in shape_pos:
-            p = (pos[0], pos[1])
-            locked_positions[p] = current_piece.color
-        current_piece = next_piece
-        next_piece = get_shape()
-        change_piece = False
+        # IF PIECE HIT GROUND
+        if change_piece:
+            for pos in shape_pos:
+                p = (pos[0], pos[1])
+                locked_positions[p] = current_piece.color
+            current_piece = next_piece
+            next_piece = get_shape()
+            change_piece = False
 
-        # call four times to check for multiple clear rows
-        clear_rows(grid, locked_positions)
+            # call four times to check for multiple clear rows
+            clear_rows(grid, locked_positions)
 
-    draw_window(win)
-    draw_next_shape(next_piece, win)
-    pygame.display.update()
+        draw_window(win)
+        draw_next_shape(next_piece, win)
+        pygame.display.update()
 
-    # Check if user lost
-    if check_lost(locked_positions):
-        run = False
+        # Check if user lost
+        if check_lost(locked_positions):
+            run = False
 
 
-    draw_text_middle("You Lost", 40, (255, 255, 255), win)
-    pygame.display.update()
-    pygame.time.delay(2000)
+            draw_text_middle("You Lost", 40, (255, 255, 255), win)
+            pygame.display.update()
+            pygame.time.delay(2000)
 
 
 def main_menu():

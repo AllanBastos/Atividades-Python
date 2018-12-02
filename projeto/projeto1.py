@@ -2,13 +2,28 @@
 from projeto.funcionalidades import *
 
 import random
-import time
+
 import pygame
 
-from pygame.locals import *
 
 
-def main():
+# menu principal
+
+def menu_principal():
+    global TELA
+    TELA
+    jogando = True
+
+    while jogando:
+        pygame.display.set_mode([LARGURA_JANELA, ALTURA_JANELA])
+        texto('Bem vindo')
+        iniciar_jogo()
+        jogando = False
+
+    terminar()
+
+# loop para começar o jogo
+def iniciar_jogo():
     global relogio, TELA, fonte_basica
     pygame.init()
     relogio = pygame.time.Clock()
@@ -23,13 +38,13 @@ def main():
             pygame.mixer.music.load('tetrisc.mid')
         pygame.mixer.music.play(-1, 0.0)
         run()
-        pygame.mixer.music.stop()
-        texto('Game Over')
 
-    terminar()
+# jogo principal
+
+
 
 def run():
-
+    global grade, TELA
     locked_position = {}
     grade = criar_grade(locked_position)
 
@@ -38,14 +53,15 @@ def run():
     peca_atual = pegar_forma()
     proxima_peca = pegar_forma()
 
-    relogio
+    relogio = pygame.time.Clock()
     fall_time = 0
     fall_speed = 0.27
 
+    jogando = True
+    while jogando:
 
-    sair = True
-    while sair:
-        fall_speed = 0.27
+
+
         grade = criar_grade(locked_position)
         fall_time += relogio.get_rawtime()
         relogio.tick()
@@ -60,38 +76,55 @@ def run():
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                sair = False
+                terminar()
 
             if event.type == pygame.KEYDOWN:
-                if pygame.key == esquerda:
+                if event.key == esquerda:
                     peca_atual.x -= 1
                     if not posicao_valida(peca_atual, grade):
                         peca_atual.x += 1
-                if pygame.key == direita:
+
+                elif event.key == direita:
                     peca_atual.x += 1
                     if not posicao_valida(peca_atual, grade):
                         peca_atual.x -= 1
-                if pygame.key == baixo:
+
+                elif event.key == rodar:
+                    peca_atual.rotacao = peca_atual.rotacao + 1 % len(peca_atual.forma)
+                    if not posicao_valida(peca_atual, grade):
+                        peca_atual.rotacao = peca_atual.rotacao - 1 % len(peca_atual.forma)
+
+                elif event.key == rodar_contrario:
+                    peca_atual.rotacao = peca_atual.rotacao - 1 % len(peca_atual.forma)
+
+                    if not posicao_valida(peca_atual, grade):
+                        peca_atual.rotacao = peca_atual.rotacao + 1 % len(peca_atual.forma)
+
+
+                elif event.key == baixo:
                     peca_atual.y += 1
                     if not posicao_valida(peca_atual, grade):
                         peca_atual.y -= 1
-                if pygame.key == rodar:
-                    peca_atual.rotacao += 1
-                    if not posicao_valida(peca_atual, grade):
-                        peca_atual.rotacao -= 1
-                if pygame.key == rodar_contrario:
-                    peca_atual.rotacao -= 1
-                    if not posicao_valida(peca_atual, grade):
-                        peca_atual.rotacao += 1
+
+                elif event.key == descer_tudo:
+                    fall_speed -= fall_speed
+
+                elif event.key == pause1:
+                    pausado()
+                elif event.key == pause:
+                    pausado()
+
+
 
         posicao_fomato = converter_formato(peca_atual)
 
         for i in range(len(posicao_fomato)):
             x, y = posicao_fomato[i]
             if y > -1:
-                grade[x][y] = peca_atual.cor
+                grade[y][x] = peca_atual.cor
 
         if mudar_peca:
+            fall_speed = 0.27
             for pos in posicao_fomato:
                 p = (pos[0], pos[1])
                 locked_position[p] = peca_atual.cor
@@ -100,19 +133,22 @@ def run():
             proxima_peca = pegar_forma()
             mudar_peca = False
 
-        if check_lost(locked_position):
-            sair = False
-
+            remover_linhas(grade, locked_position)
 
         desenhar_janela(TELA, grade)
+        desenha_proxima_peca(proxima_peca, TELA)
+        pygame.display.update()
 
 
+        if fim_de_jogo(locked_position):
+            jogando = False
+            textos('Gamer Over', 60, cor_vermelha, TELA, int(LARGURA_JANELA / 2) - 170, int(ALTURA_JANELA / 2) - 30, 'segoeprint')
+            pygame.time.delay(2000)
+            pygame.mixer.music.stop()
+            TELA.fill(cor_branca)
 
-    terminar()
+
+            menu_principal()
 
 
-
-main()
-
-
-
+menu_principal()
