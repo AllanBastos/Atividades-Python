@@ -1,7 +1,11 @@
 import random
 import pygame
 import sys
+import pygameMenu
 from pygame.locals import *
+from pygameMenu.locals import *
+
+
 
 # variaveis globais
 
@@ -245,9 +249,11 @@ def texto(text):
 
 
 def tela_inicial():
-    fundo = pygame.image.load('tetrismenu.jpg')
-    TELA.blit(fundo, (0, 0))
 
+    fundo = pygame.image.load('tetrismenu.png')
+    TELA.blit(fundo, (0, 0))
+    # menu = pygameMenu.Menu(TELA, LARGURA_JANELA, ALTURA_JANELA, fonte_basica, 'Tetris', True)
+    # menu.draw()
     while foi_precionado() == None:
         pygame.display.update()
         relogio.tick()
@@ -257,10 +263,14 @@ def tela_inicial():
 
 def textos(texto, size, cor, surface, posicaox, posicaoy, tipo):
     pygame.font.init()
-    fonte = pygame.font.SysFont(tipo, size, bold=True)
-    titulo = fonte.render(texto, 1, cor)
+    if texto == 'Gamer Over':
+        imagem = pygame.image.load('gamer over letra.png')
+        TELA.blit(imagem, ( 0 , 0))
+    else:
+        fonte = pygame.font.SysFont(tipo, size, bold=True)
+        titulo = fonte.render(texto, 1, cor)
 
-    surface.blit(titulo, (posicaox, posicaoy))
+        surface.blit(titulo, (posicaox, posicaoy))
 
     pygame.display.update()
 
@@ -277,7 +287,8 @@ def foi_precionado():
 
 
 def desenhar_janela(tela, grade):
-    tela.fill((0, 0, 0))
+    image = pygame.image.load('background.png')
+    tela.blit(image, (0, 0))
 
     pygame.font.init()
     fonte = pygame.font.SysFont('comicsans', 60)
@@ -314,8 +325,6 @@ def desenhar_janela_dificil(tela, grade):
 
 
 def desenha_proxima_peca(forma, tela):
-    fonte = pygame.font.SysFont('comicsans',  30)
-    titulo = fonte.render('Proxima Peça', 1, cor_branca)
 
     sx = topo_esquerdo_x + LARGURA_TABULEIRO + 50
     sy = topo_esquerdo_y + ALTURA_TABULEIRO / 2 - 100
@@ -324,9 +333,9 @@ def desenha_proxima_peca(forma, tela):
         linha= list(lin)
         for j, col in enumerate(linha):
             if col == 'O':
-                pygame.draw.rect(tela, forma.cor, (sx + j * TAMANHO_BLOCO, sy + i * TAMANHO_BLOCO, TAMANHO_BLOCO, TAMANHO_BLOCO), 0)
+                pygame.draw.rect(tela, forma.cor, (sx + j * TAMANHO_BLOCO + 5, sy + i * TAMANHO_BLOCO, TAMANHO_BLOCO, TAMANHO_BLOCO), 0)
 
-    tela.blit(titulo, (sx + 10, sy - 30))
+
 
 
 def calcular_nivel(pontos):
@@ -402,15 +411,15 @@ def multipos_textos(listatext, tela):
     pygame.display.update()
 
 def desenhar_status(nivel, pontos):
-        scoreSurf = fonte_basica.render('Pontuação: {}' .format(pontos), True, cor_branca)
+        scoreSurf = fonte_basica.render('{}' .format(pontos * 100), True, cor_branca)
         scoreRect = scoreSurf.get_rect()
 
-        scoreRect.topleft = (LARGURA_JANELA - 150, 20)
+        scoreRect.topleft = (LARGURA_JANELA - 125, 55)
         TELA.blit(scoreSurf, scoreRect)
 
 
-        levelSurf = fonte_basica.render('Level: {}' .format(nivel), True, cor_branca)
+        levelSurf = fonte_basica.render('{}' .format(nivel), True, cor_branca)
         levelRect = levelSurf.get_rect()
-        levelRect.topleft = (LARGURA_JANELA - 150, 50)
+        levelRect.topleft = (LARGURA_JANELA - 120, 130)
         TELA.blit(levelSurf, levelRect)
         pygame.display.update()

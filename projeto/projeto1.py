@@ -35,7 +35,7 @@ def iniciar_jogo():
         else:
             pygame.mixer.music.load('tetrisc.mid')
         pygame.mixer.music.play(-1, 0.0)
-        run_dificil()
+        run_facil()
 
 
 # nivel facil:
@@ -141,7 +141,7 @@ def run_facil():
             if fim_de_jogo(locked_position):
                 jogando = False
                 textos('Gamer Over', 60, cor_branca, TELA, int(LARGURA_JANELA / 2) - 170, int(ALTURA_JANELA / 2) - 30,
-                       'segoeprint')
+                       'VCR_OSD_MONO_1.001.ttf')
                 pygame.time.delay(1000)
                 pygame.mixer.music.stop()
                 while True:
