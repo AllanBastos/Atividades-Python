@@ -1,3 +1,4 @@
+
 import random
 import pygame
 import sys
@@ -24,12 +25,6 @@ topo_esquerdo_y = ALTURA_JANELA - ALTURA_TABULEIRO
 TELA = pygame.display.set_mode([LARGURA_JANELA, ALTURA_JANELA])
 
 
-# areas do jogo
-area_jogo_pecas = pygame.Surface((800, 710))
-area_jogo_placar = pygame.Surface((265, 710))
-
-
-
 
 cor_branca = (255, 255, 255)
 cor_azulado = (11, 139, 244)
@@ -40,22 +35,10 @@ cor_preta = (0, 0, 0)
 cor_cinza = (15, 15, 15)
 cor_azul = (0, 0, 255)
 cor_peca = [cor_verde, cor_azulado, cor_vermelha, cor_amarela, (255, 165, 0), cor_azul, (128, 0, 128)]
-
-
 cor_borda = cor_cinza
 cor_bg = cor_preta
 
 fonte_basica = pygame.font.Font('freesansbold.ttf', 18)
-
-
-
-# # limites area do jogo
-#
-# limite_esquerdo = pygame.Rect(0, 5, 5, 710)
-# limite_direito = pygame.Rect(805, 5, 5, 710)
-# limite_inferior = pygame.Rect(0, 715, 810, 5)
-# limite_superior = pygame.Rect(0, 0, 810, 5)
-
 
 
 # formas das peças
@@ -74,36 +57,11 @@ PECA_J = [['.....', '.O...', '.OOO.', '.....', '.....'], ['.....', '..OO.', '..O
 PECA_L = [['.....', '..O..', '..O..', '..OO.', '.....'], ['.....', '.....', '.OOO.', '.O...', '.....'],
           ['.....', '.OO..', '..O..', '..O..', '.....'], ['.....', '...O.', '.OOO.', '.....', '.....']]
 
-
-
 PECA_T = [['.....', '.....', '..O..', '.OOO.', '.....'], ['.....','..O..','..OO.','..O..','.....'],
           ['.....','.....','.OOO.', '..O..', ], ['.....','..O..', '.OO..', '..O..', '.....']]
 
 
 formas = [PECA_S, PECA_Z, PECA_I, PECA_O, PECA_J, PECA_L, PECA_T]
-
-#
-# PECAS = {'S': PECA_S,
-#          'Z': PECA_Z,
-#          'I': PECA_I,
-#          'O': PECA_O,
-#          'J': PECA_J,
-#          'L': PECA_L,
-#          'T': PECA_T}
-
-# for i in PECAS:
-#     for j in range(len(PECAS[i])):
-#         dados_formato = []
-#         for x in range(5):
-#             coluna = []
-#             for y in range(5):
-#                 if PECAS[i][j][y][x] == '.':
-#                     coluna.append(EM_BRANCO)
-#                 else:
-#                     coluna.append(1)
-#             dados_formato.append(coluna)
-#         PECAS[i][j] = dados_formato
-
 
 
 # chaves
@@ -248,15 +206,7 @@ def texto(text):
         relogio.tick()
 
 
-def tela_inicial():
 
-    fundo = pygame.image.load('tetrismenu.png')
-    TELA.blit(fundo, (0, 0))
-    # menu = pygameMenu.Menu(TELA, LARGURA_JANELA, ALTURA_JANELA, fonte_basica, 'Tetris', True)
-    # menu.draw()
-    while foi_precionado() == None:
-        pygame.display.update()
-        relogio.tick()
 
 
 
@@ -304,10 +254,11 @@ def desenhar_janela(tela, grade):
 
     desenha_grade(tela, 20, 10)
     pygame.draw.rect(tela, (255, 0, 0), (topo_esquerdo_x, topo_esquerdo_y, LARGURA_TABULEIRO, ALTURA_TABULEIRO), 5)
-
+    pygame.display.update()
 
 def desenhar_janela_dificil(tela, grade):
-    tela.fill((0, 0, 0))
+    image = pygame.image.load('background.png')
+    tela.blit(image, (0, 0))
 
     pygame.font.init()
     fonte = pygame.font.SysFont('comicsans', 60)
@@ -322,7 +273,7 @@ def desenhar_janela_dificil(tela, grade):
 
     pygame.draw.rect(tela, (255, 0, 0), (topo_esquerdo_x, topo_esquerdo_y, LARGURA_TABULEIRO, ALTURA_TABULEIRO), 5)
 
-
+    pygame.display.update()
 
 def desenha_proxima_peca(forma, tela):
 
@@ -410,16 +361,74 @@ def multipos_textos(listatext, tela):
 
     pygame.display.update()
 
-def desenhar_status(nivel, pontos):
+def desenhar_status(nivel, pontos, record=0):
+        # pontos atuais
         scoreSurf = fonte_basica.render('{}' .format(pontos * 100), True, cor_branca)
         scoreRect = scoreSurf.get_rect()
-
-        scoreRect.topleft = (LARGURA_JANELA - 125, 55)
+        scoreRect.topleft = (LARGURA_JANELA - 130, 55)
         TELA.blit(scoreSurf, scoreRect)
 
-
+        # nivel
         levelSurf = fonte_basica.render('{}' .format(nivel), True, cor_branca)
         levelRect = levelSurf.get_rect()
         levelRect.topleft = (LARGURA_JANELA - 120, 130)
         TELA.blit(levelSurf, levelRect)
+
+        # record
+        recordSurf = fonte_basica.render('{}'.format(record), True, cor_branca)
+        recordRect = recordSurf.get_rect()
+        recordRect.topleft = (55, ALTURA_JANELA/2 - 50)
+
+        TELA.blit(recordSurf, recordRect)
+
+
         pygame.display.update()
+
+# record nivel facil
+def recordf(record):
+    pontos = record_maxf()
+    with open('records.txt', 'w') as f:
+        if int(pontos) > int(record):
+            f.write((str(pontos)))
+        else:
+            f.write((str(record)))
+
+def record_maxf():
+    with open('records.txt', 'r') as f:
+        lines = f.readlines()
+        pontos = lines[0].strip()
+    return pontos
+
+
+
+#recode nivel normal
+def recordn(record):
+    pontos = record_maxn()
+    with open('recordsn.txt', 'w') as f:
+        if int(pontos) > int(record):
+            f.write((str(pontos)))
+        else:
+            f.write((str(record)))
+
+def record_maxn():
+    with open('recordsn.txt', 'r') as f:
+        lines = f.readlines()
+        pontos = lines[0].strip()
+    return pontos
+
+
+
+#record nivel dificil
+def recordd(record):
+    pontos = record_maxd()
+    with open('recordsd.txt', 'w') as f:
+        if int(pontos) > int(record):
+            f.write((str(pontos)))
+        else:
+            f.write((str(record)))
+
+def record_maxd():
+    with open('recordsd.txt', 'r') as f:
+        lines = f.readlines()
+        pontos = lines[0].strip()
+    return pontos

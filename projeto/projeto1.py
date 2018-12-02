@@ -1,27 +1,67 @@
+
 from projeto.funcionalidades import *
 import random
 import pygame
+pygame.init()
 
 
-
-# menu principal
 
 def menu_principal():
     global TELA
     pygame.init()
-    jogando = True
+    pygame.mixer.music.stop()
+    while True:
+        fundo = pygame.image.load('tetrismenu.png')
+        TELA.blit(fundo, (0, 0))
 
-    while jogando:
-        TELA
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                terminar()
 
-        tela_inicial()
-        iniciar_jogo()
-        jogando = False
+            if event.type == pygame.KEYDOWN:  # Aqui ele faz o movimento da peca
+                if event.key == K_1:
+                    menu_jogar()
 
-    terminar()
+                elif event.key == K_2:
+                    menu_ajuda()
 
-# loop para começar o jogo
-def iniciar_jogo():
+                elif event.key == K_3:
+                    terminar()
+
+        pygame.display.update()
+
+
+def menu_jogar():
+    while True:
+        fundo = pygame.image.load('menunivel.png')
+        TELA.blit(fundo, (0, 0))
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                terminar()
+
+            if event.type == pygame.KEYDOWN:  # Aqui ele faz o movimento da peca
+                if event.key == K_1:
+                    iniciar_jogo(1)
+
+                elif event.key == K_2:
+                    iniciar_jogo(2)
+
+                elif event.key == K_3:
+                    iniciar_jogo(3)
+
+                elif event.key == pygame.K_4:
+                    menu_principal()
+        pygame.display.update()
+
+def menu_ajuda():
+    pass
+
+
+def tela_inicial(nivel):
+    iniciar_jogo(nivel)
+
+
+def iniciar_jogo(modo):
     global relogio, TELA, fonte_basica
     pygame.init()
     relogio = pygame.time.Clock()
@@ -35,13 +75,22 @@ def iniciar_jogo():
         else:
             pygame.mixer.music.load('tetrisc.mid')
         pygame.mixer.music.play(-1, 0.0)
-        run_facil()
+
+        if modo == 1:
+            run_facil()
+
+        elif modo == 2:
+            run_normal()
+
+        elif modo == 3:
+            run_dificil()
 
 
 # nivel facil:
 
 def run_facil():
         global grade, TELA
+        ultimo_record = record_maxf()
         locked_position = {}
         grade = criar_grade(locked_position)
 
@@ -132,10 +181,11 @@ def run_facil():
                 pontos += remover_linhas(grade, locked_position) * 2
                 nivel = calcular_nivel(pontos)
                 fall_speed = frequencia_peca_f()
+                recordf(pontos*100)
 
             desenhar_janela(TELA, grade)
             desenha_proxima_peca(proxima_peca, TELA)
-            desenhar_status(nivel, pontos)
+            desenhar_status(nivel, pontos, ultimo_record)
             pygame.display.update()
 
             if fim_de_jogo(locked_position):
@@ -171,6 +221,7 @@ def run_facil():
 
 def run_normal():
     global grade, TELA
+    ultimo_record = record_maxn()
     locked_position = {}
     grade = criar_grade(locked_position)
 
@@ -261,10 +312,11 @@ def run_normal():
             pontos += remover_linhas(grade, locked_position) * 2
             nivel = calcular_nivel(pontos)
             fall_speed = frequencia_peca_n(nivel)
+            recordn(pontos * 100)
 
         desenhar_janela(TELA, grade)
         desenha_proxima_peca(proxima_peca, TELA)
-        desenhar_status(nivel, pontos)
+        desenhar_status(nivel, pontos, ultimo_record)
         pygame.display.update()
 
         if fim_de_jogo(locked_position):
@@ -299,6 +351,7 @@ def run_normal():
 # nivel_dificil
 def run_dificil():
     global grade, TELA
+    ultimo_record = record_maxd()
     locked_position = {}
     grade = criar_grade(locked_position)
 
@@ -389,11 +442,11 @@ def run_dificil():
             pontos += remover_linhas(grade, locked_position) * 2
             nivel = calcular_nivel(pontos)
             fall_speed = frequencia_peca_d(nivel)
-            print (fall_speed)
+            recordd(pontos * 100)
 
         desenhar_janela_dificil(TELA, grade)
         desenha_proxima_peca(proxima_peca, TELA)
-        desenhar_status(nivel, pontos)
+        desenhar_status(nivel, pontos, ultimo_record)
         pygame.display.update()
 
         if fim_de_jogo(locked_position):
@@ -423,6 +476,5 @@ def run_dificil():
                                 pygame.mixer.music.load('tetrisc.mid')
                             pygame.mixer.music.play(-1, 0.0)
                             run_dificil()
-
 
 menu_principal()
