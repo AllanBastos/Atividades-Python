@@ -35,7 +35,7 @@ def iniciar_jogo():
         else:
             pygame.mixer.music.load('tetrisc.mid')
         pygame.mixer.music.play(-1, 0.0)
-        run_dificil()
+        run_normal()
 
 
 # nivel facil:
@@ -297,7 +297,6 @@ def run_normal():
 
 
 # nivel_dificil
-
 def run_dificil():
     global grade, TELA
     locked_position = {}
@@ -391,7 +390,7 @@ def run_dificil():
             nivel = calcular_nivel(pontos)
             fall_speed = frequencia_peca_d(nivel)
 
-        desenhar_janela(TELA, grade)
+        desenhar_janela_dificil(TELA, grade)
         desenha_proxima_peca(proxima_peca, TELA)
         desenhar_status(nivel, pontos)
         pygame.display.update()

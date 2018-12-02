@@ -295,6 +295,24 @@ def desenhar_janela(tela, grade):
     pygame.draw.rect(tela, (255, 0, 0), (topo_esquerdo_x, topo_esquerdo_y, LARGURA_TABULEIRO, ALTURA_TABULEIRO), 5)
 
 
+def desenhar_janela_dificil(tela, grade):
+    tela.fill((0, 0, 0))
+
+    pygame.font.init()
+    fonte = pygame.font.SysFont('comicsans', 60)
+    rotulo = fonte.render('Tetris', 1, cor_branca)
+
+    tela.blit(rotulo, (topo_esquerdo_x + LARGURA_TABULEIRO / 2 - (rotulo.get_width() / 2), 30))
+
+    for i in range(len(grade)):
+        for j in range(len(grade[i])):
+            pygame.draw.rect(TELA, grade[i][j], (topo_esquerdo_x + j * TAMANHO_BLOCO, topo_esquerdo_y + i*TAMANHO_BLOCO,
+                                                 TAMANHO_BLOCO, TAMANHO_BLOCO), 0)
+
+    pygame.draw.rect(tela, (255, 0, 0), (topo_esquerdo_x, topo_esquerdo_y, LARGURA_TABULEIRO, ALTURA_TABULEIRO), 5)
+
+
+
 def desenha_proxima_peca(forma, tela):
     fonte = pygame.font.SysFont('comicsans',  30)
     titulo = fonte.render('Proxima Peça', 1, cor_branca)
@@ -395,3 +413,4 @@ def desenhar_status(nivel, pontos):
         levelRect = levelSurf.get_rect()
         levelRect.topleft = (LARGURA_JANELA - 150, 50)
 
+        pygame.display.update()
