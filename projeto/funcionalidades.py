@@ -2,9 +2,8 @@
 import random
 import pygame
 import sys
-import pygameMenu
 from pygame.locals import *
-from pygameMenu.locals import *
+
 
 
 
