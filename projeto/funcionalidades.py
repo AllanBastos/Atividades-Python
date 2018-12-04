@@ -66,7 +66,6 @@ formas = [PECA_S, PECA_Z, PECA_I, PECA_O, PECA_J, PECA_L, PECA_T]
 # chaves
 
 pause = pygame.K_p
-pause1 = pygame.K_PAUSE
 esquerda = pygame.K_LEFT
 direita = pygame.K_RIGHT
 baixo = pygame.K_DOWN
