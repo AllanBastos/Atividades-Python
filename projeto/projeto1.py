@@ -46,12 +46,15 @@ def menu_jogar():
 
             if event.type == pygame.KEYDOWN:
                 if event.key == K_1:
+                    jogador()
                     iniciar_jogo(1)
 
                 elif event.key == K_2:
+                    jogador()
                     iniciar_jogo(2)
 
                 elif event.key == K_3:
+                    jogador()
                     iniciar_jogo(3)
 
                 elif event.key == pygame.K_TAB:
@@ -74,6 +77,12 @@ def menu_ajuda():
 
 def menu_raking():
     pass
+
+def jogador():
+    pass
+
+
+
 
 def iniciar_jogo(modo):
     global relogio, TELA, fonte_basica
