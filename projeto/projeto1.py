@@ -24,10 +24,14 @@ def menu_principal():
                     menu_jogar()
 
                 elif event.key == K_2:
-                    menu_ajuda()
+                    menu_raking()
 
                 elif event.key == K_3:
+                    menu_ajuda()
+                elif event.key == K_4:
                     terminar()
+
+
 
         pygame.display.update()
 
@@ -68,9 +72,8 @@ def menu_ajuda():
         pygame.display.update()
 
 
-def tela_inicial(nivel):
-    iniciar_jogo(nivel)
-
+def menu_raking():
+    pass
 
 def iniciar_jogo(modo):
     global relogio, TELA, fonte_basica
@@ -95,6 +98,8 @@ def iniciar_jogo(modo):
 
         elif modo == 3:
             run(3)
+
+
 
 
 # nivel facil:
