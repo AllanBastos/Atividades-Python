@@ -76,7 +76,18 @@ def menu_ajuda():
 
 
 def menu_raking():
-    pass
+    while True:
+        fundo = pygame.image.load('menuranking.png')
+        TELA.blit(fundo, (0, 0))
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                terminar()
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_TAB:
+                    menu_principal()
+        pygame.display.update()
+
 
 def jogador():
     pass
