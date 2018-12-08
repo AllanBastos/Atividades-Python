@@ -1,0 +1,6 @@
+jota k 1000
+allan 200
+allan 0
+allan 0
+allan 0
+jota k 0

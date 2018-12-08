@@ -37,6 +37,10 @@ def menu_principal():
 
 
 def menu_jogar():
+    global jogador_nivel_3, jogador_nivel_1, jogador_nivel_2
+    jogador_nivel_1 = ''
+    jogador_nivel_2 = ''
+    jogador_nivel_3 = ''
     while True:
         fundo = pygame.image.load('menunivel.png')
         TELA.blit(fundo, (0, 0))
@@ -46,15 +50,15 @@ def menu_jogar():
 
             if event.type == pygame.KEYDOWN:
                 if event.key == K_1:
-                    jogador()
+                    jogador_nivel_1 = input_texto(TELA)
                     iniciar_jogo(1)
 
                 elif event.key == K_2:
-                    jogador()
+                    jogador_nivel_2 = input_texto(TELA)
                     iniciar_jogo(2)
 
                 elif event.key == K_3:
-                    jogador()
+                    jogador_nivel_3 = input_texto(TELA)
                     iniciar_jogo(3)
 
                 elif event.key == pygame.K_TAB:
@@ -76,9 +80,11 @@ def menu_ajuda():
 
 
 def menu_raking():
+    print(mostrar_rankin())
     while True:
         fundo = pygame.image.load('menuranking.png')
         TELA.blit(fundo, (0, 0))
+        mostrar_rankin()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 terminar()
@@ -87,12 +93,6 @@ def menu_raking():
                 if event.key == pygame.K_TAB:
                     menu_principal()
         pygame.display.update()
-
-
-def jogador():
-    pass
-
-
 
 
 def iniciar_jogo(modo):
@@ -251,6 +251,8 @@ def run(modo):
                        'VCR_OSD_MONO_1.001.ttf')
                 pygame.time.delay(1000)
                 pygame.mixer.music.stop()
+                if modo == 1:
+                    add_ranking1(jogador_nivel_1, pontos*100)
                 while True:
                     TELA.fill(cor_branca)
                     listatext = ['Precione \'TAB\' para ir para ir para o menu', 'ou',

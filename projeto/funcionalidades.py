@@ -430,3 +430,110 @@ def record_maxd():
         lines = f.readlines()
         pontos = lines[0].strip()
     return pontos
+
+
+def input_texto(TELA):
+    global relogio
+    TELA
+    font = pygame.font.Font(None, 32)
+    relogio
+    input_box = pygame.Rect(298, 338, 140, 32)
+    cor_inicial = pygame.Color('lightskyblue3')
+    cor_ativa = pygame.Color('dodgerblue2')
+    cor = cor_inicial
+    ativo = False
+    texto = ''
+    pronto = False
+
+    while not pronto:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                terminar()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+
+                if input_box.collidepoint(event.pos):
+                    ativo = not ativo
+                else:
+                    ativo = False
+
+                cor = cor_ativa if ativo else cor_inicial
+            if event.type == pygame.KEYDOWN:
+                if ativo:
+                    if event.key == pygame.K_RETURN and len(texto) > 2:
+                        pronto = True
+                    elif event.key == pygame.K_BACKSPACE:
+                        texto = texto[:-1]
+                    else:
+                        texto += event.unicode
+        jogador = pygame.image.load('jogador.png')
+        TELA.blit(jogador, (0, 0))
+        # Render the current text.
+        txt_surface = font.render(texto, True, cor)
+        # Resize the box if the text is too long.
+        width = max(200, txt_surface.get_width() + 10)
+        input_box.w = width
+        # Blit the text.
+        TELA.blit(txt_surface, (301, 343))
+        # Blit the input_box rect.
+        pygame.draw.rect(TELA, cor_branca, input_box, 2)
+
+        pygame.display.flip()
+        relogio.tick(30)
+
+    return texto
+
+def add_ranking1(jogador, pontos):
+    f = open('ranking1.txt', 'a')
+    f.write('%s %d \n' %(jogador, pontos))
+    f.close()
+
+def mostrar_rankin():
+    txt = open('ranking1.txt', 'r')
+    lista = txt.readlines()
+    txt.close()
+    arq = open('ranking1.txt', 'w')
+    ranking_sort(lista, arq)
+    arq.close()
+    mostar()
+
+def mostar():
+    f = open('ranking1.txt', 'r')
+    lista = f.readlines()
+    lugar1 = lista[0].split()
+    lugar2 = lista[1].split()
+    lugar3 = lista[2].split()
+    pontos1 = lugar1.pop()
+    pontos2 = lugar1.pop()
+    pontos3 = lugar3.pop()
+
+    nome1 = fonte_basica.render(str(lugar1[0]) ,1 , cor_branca)
+    p1 = fonte_basica.render(str(pontos1), 1, cor_branca)
+    TELA.blit(nome1, (95, 451))
+    TELA.blit(p1, (505, 451))
+
+
+
+
+
+def ranking_sort(lista, arquivo):  ###### FUNÇÃO QUE VAI COLOCAR O RANKING EM ORDEM DESCRECENTE
+    aux = []
+    for n in range(len(lista)):
+        var = lista[n].split()  #### var = ['ab','-','12']
+        aux.append(int(var[len(var) - 1]))
+
+    aux.sort()
+    aux.reverse()
+
+    while len(lista) != 0:
+        for n in range(len(lista)):
+            auxiliar = lista[n].split()
+            valor = auxiliar[len(auxiliar) - 1]  #### n = 0 , 1 , 2
+            if aux[0] == int(valor):
+                arquivo.write(lista[n])
+                break
+        aux.remove(aux[0])
+        lista.remove(lista[n])
+
+    f = open('renking.txt', 'w+')
+    f.write(str(aux))
+    f.close()
