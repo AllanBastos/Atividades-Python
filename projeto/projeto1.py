@@ -16,8 +16,8 @@ def menu_principal():
 
         for event in pygame.event.get():
 
-            if event.type == pygame.QUIT:
-                terminar()
+            if event.type == pygame.QUIT:                                      # menu principal
+                terminar()                                                     # de acesso aos outros menus
 
             if event.type == pygame.KEYDOWN:
                 if event.key == K_1:
@@ -28,10 +28,9 @@ def menu_principal():
 
                 elif event.key == K_3:
                     menu_ajuda()
+
                 elif event.key == K_4:
                     terminar()
-
-
 
         pygame.display.update()
 
@@ -45,11 +44,11 @@ def menu_jogar():
         fundo = pygame.image.load('menunivel.png')
         TELA.blit(fundo, (0, 0))
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                terminar()
-
-            if event.type == pygame.KEYDOWN:
-                if event.key == K_1:
+            if event.type == pygame.QUIT:                                      # Escolhe qual nivel do jogo
+                terminar()                                                     # que vai jogar
+                                                                               # " (1) Facil "
+            if event.type == pygame.KEYDOWN:                                   # " (2) Normal "
+                if event.key == K_1:                                           # " (3) Dificil "
                     jogador_nivel_1 = input_texto(TELA)
                     iniciar_jogo(1)
 
@@ -69,7 +68,7 @@ def menu_ajuda():
     while True:
         fundo = pygame.image.load('menuajuda.png')
         TELA.blit(fundo, (0, 0))
-        for event in pygame.event.get():
+        for event in pygame.event.get():                            # Menu que mostra as regras do jogo e os controles
             if event.type == pygame.QUIT:
                 terminar()
 
@@ -84,7 +83,7 @@ def menu_raking():
         fundo = pygame.image.load('menuranking.png')
         TELA.blit(fundo, (0, 0))
         mostrar_rankin('ranking1.txt', 'ranking2.txt', 'ranking3.txt')
-        for event in pygame.event.get():
+        for event in pygame.event.get():                            # mostra o ranking do nivel facil, normal e dificil
             if event.type == pygame.QUIT:
                 terminar()
 
@@ -107,7 +106,7 @@ def iniciar_jogo(modo):
             pygame.mixer.music.load('tetrisb.mid')
         else:
             pygame.mixer.music.load('tetrisc.mid')
-        pygame.mixer.music.play(-1, 0.0)
+        pygame.mixer.music.play(-1, 0.0)                                   # aqui ele inicia o jogo chamando uma musica
 
         if modo == 1:
             run(1)
@@ -123,7 +122,7 @@ def iniciar_jogo(modo):
 
 # nivel facil:
 
-def run(modo):
+def run(modo):                                                               # função do jogo
         global grade, TELA
 
 
@@ -144,7 +143,7 @@ def run(modo):
             ultimo_record = record_maxf()
         elif modo == 2:
             fall_speed = frequencia_peca_n(nivel)
-            ultimo_record = record_maxn()
+            ultimo_record = record_maxn()                             # determina o recorde de cada nivel e a velocidade
         else:
             fall_speed = frequencia_peca_d(nivel)
             ultimo_record = record_maxd()
@@ -172,12 +171,12 @@ def run(modo):
                         if not posicao_valida(peca_atual, grade):         # imediatamente para posição anterio
                             peca_atual.x += 1
 
-                    elif event.key == direita or event.key == pygame.K_d:                             # movimento para direita
+                    elif event.key == direita or event.key == pygame.K_d:                      # movimento para direita
                         peca_atual.x += 1
                         if not posicao_valida(peca_atual, grade):
                             peca_atual.x -= 1
 
-                    elif event.key == rodar or event.key == pygame.K_w:                                                    # movimento rotacinal
+                    elif event.key == rodar or event.key == pygame.K_w:                         # movimento rotacinal
                         peca_atual.rotacao = peca_atual.rotacao + 1 % len(peca_atual.forma)     # para direita
                         if not posicao_valida(peca_atual, grade):
                             peca_atual.rotacao = peca_atual.rotacao - 1 % len(peca_atual.forma)

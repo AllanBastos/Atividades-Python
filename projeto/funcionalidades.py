@@ -91,17 +91,15 @@ class peca(object):
         self.rotacao = int(0)
 
 
-
 def criar_grade(locked_pos={}):
     grade = [[(0, 0, 0) for x in range(10)] for x in range(20)]
 
     for i in range(len(grade)):
-        for j in range(len(grade[i])):
+        for j in range(len(grade[i])):                          # Cria a grade do jogo
             if (j, i) in locked_pos:
                 c = locked_pos[(j, i)]
                 grade[i][j] = c
     return grade
-
 
 
 def converter_formato(forma):
@@ -109,8 +107,8 @@ def converter_formato(forma):
     formato = forma.forma[forma.rotacao % len(forma.forma)]
 
     for i, linhas in enumerate(formato):
-        linha = list(linhas)
-        for j, colunas in enumerate(linha):
+        linha = list(linhas)                                      # aqui pega o formato da peça
+        for j, colunas in enumerate(linha):                       # quando nas diversas posições
             if colunas == 'O':
                 posicoes.append((forma.x + j, forma.y + i))
 
@@ -121,9 +119,10 @@ def converter_formato(forma):
 
 
 def posicao_valida(forma, grade):
-    posicoes_aceitas = [[(j, i) for j in range(10) if grade[i][j] == (0, 0, 0)] for i in range(20)]
-    posicoes_aceitas = [j for sub in posicoes_aceitas for j in sub]
-
+    posicoes_aceitas = [[(j, i) for j in range(10)
+                         if grade[i][j] == (0, 0, 0)] for i in range(20)]
+    posicoes_aceitas = [j for sub in posicoes_aceitas for j in sub]         # verifica se a posição é valida para
+                                                                            # rotação e movimentação
     formatado = converter_formato(forma)
 
     for pos in formatado:
@@ -133,8 +132,8 @@ def posicao_valida(forma, grade):
     return True
 
 
-def fim_de_jogo(posicoes):
-    for pos in posicoes:
+def fim_de_jogo(posicoes):                  # aqui vai verificar se o tabuleiro na diagonal ja esta
+    for pos in posicoes:                    #todo preenchido e finaliza o jogo
         x, y = pos
 
         if y < 1:
@@ -142,14 +141,14 @@ def fim_de_jogo(posicoes):
     return False
 
 
-
 def pegar_forma():
-    global formas, cor_peca
+    global formas, cor_peca                             # vai dizer qual vai ser a peca a vim
 
     return peca(5, 0, random.choice(formas))
 
+
 def desenha_grade(tela, linhas, coluna):
-    sx = topo_esquerdo_x
+    sx = topo_esquerdo_x                                 # desenha as grades do tabuleiro
     sy = topo_esquerdo_y
 
     for i in range(linhas):
@@ -159,29 +158,31 @@ def desenha_grade(tela, linhas, coluna):
             pygame.draw.line(tela, cor_borda, (sx + j * TAMANHO_BLOCO, sy),
                              (sx + j * TAMANHO_BLOCO, sy + ALTURA_TABULEIRO))
 
+
 def remover_linhas(grade, locked):
-    inc = 0
+    lc = 0
 
     for i in range(len(grade) - 1, -1, -1):
         linha = grade[i]
         if (0, 0, 0) not in linha:
-            inc += 1
-
-            ind = i
-            for j in range(len(linha)):
+            lc += 1                                              # aqui ele vai percorrer o tabuleiro
+                                                                 # verificando se ja tem alguma linha
+            rmv = i                                              # na horizontal completa e irar remover apenas
+            for j in range(len(linha)):                          # as completas e puxar o resto para baixo se possivel
                 try:
                     del locked[(j, i)]
 
                 except:
                     continue
 
-    if inc > 0:
+    if lc > 0:
         for key in sorted(list(locked), key=lambda x: x[1])[::-1]:
             x, y = key
-            if y < ind:
-                newkey = (x, y + inc)
+            if y < rmv:
+                newkey = (x, y + lc)
                 locked[newkey] = locked.pop(key)
-    return inc
+    return lc
+
 
 def texto(text):
     titleFont = pygame.font.Font('freesansbold.ttf', 100)
@@ -204,11 +205,6 @@ def texto(text):
         relogio.tick()
 
 
-
-
-
-
-
 def textos(texto, size, cor, surface, posicaox, posicaoy, tipo):
     pygame.font.init()
     if texto == 'Gamer Over':
@@ -223,7 +219,7 @@ def textos(texto, size, cor, surface, posicaox, posicaoy, tipo):
     pygame.display.update()
 
 
-def foi_precionado():
+def foi_precionado():                                   # se alguma tecla foi pecionada
     for event in pygame.event.get():
         if event.type == QUIT:
             terminar()
@@ -246,7 +242,8 @@ def desenhar_janela(tela, grade):
 
     for i in range(len(grade)):
         for j in range(len(grade[i])):
-            pygame.draw.rect(TELA, grade[i][j], (topo_esquerdo_x + j * TAMANHO_BLOCO, topo_esquerdo_y + i*TAMANHO_BLOCO,
+            pygame.draw.rect(TELA, grade[i][j],
+                             (topo_esquerdo_x + j * TAMANHO_BLOCO, topo_esquerdo_y + i*TAMANHO_BLOCO,
                                                  TAMANHO_BLOCO, TAMANHO_BLOCO), 0)
 
 
@@ -304,7 +301,7 @@ def terminar():
     pygame.quit()
     sys.exit()
 
-def pausado():
+def pausado():                          # quando em pause a tela fica parada
 
     pausado = True
     while pausado:
@@ -359,7 +356,7 @@ def multipos_textos(listatext, tela):
 
     pygame.display.update()
 
-def desenhar_status(nivel, pontos, record=0):
+def desenhar_status(nivel, pontos, record=0):        # desenha o nivel a potuação e o record
         # pontos atuais
         scoreSurf = fonte_basica.render('{}' .format(pontos * 100), True, cor_branca)
         scoreRect = scoreSurf.get_rect()
@@ -432,7 +429,7 @@ def record_maxd():
     return pontos
 
 
-def input_texto(TELA):
+def input_texto(TELA):                      # função para pegar o nome do jogador
     global relogio
     TELA
     font = pygame.font.Font(None, 32)
@@ -481,6 +478,9 @@ def input_texto(TELA):
         relogio.tick(30)
 
     return texto
+
+
+# mostrar o rankin de cada nivel e faz as modificações para ficar em ordem decrescente (do maior para o menor )
 
 def add_ranking(jogador, pontos, nome):
     f = open(nome, 'a')
@@ -602,3 +602,4 @@ def ranking_sort(lista, arquivo, nome):
     f = open(nome, 'w+')
     f.write(str(aux))
     f.close()
+
