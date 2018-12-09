@@ -1,0 +1,5 @@
+ramon 600 
+Allan 200
+player 0
+player 0
+player 0

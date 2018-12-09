@@ -482,43 +482,108 @@ def input_texto(TELA):
 
     return texto
 
-def add_ranking1(jogador, pontos):
-    f = open('ranking1.txt', 'a')
+def add_ranking(jogador, pontos, nome):
+    f = open(nome, 'a')
     f.write('%s %d \n' %(jogador, pontos))
     f.close()
 
-def mostrar_rankin():
-    txt = open('ranking1.txt', 'r')
-    lista = txt.readlines()
-    txt.close()
-    arq = open('ranking1.txt', 'w')
-    ranking_sort(lista, arq)
-    arq.close()
+def mostrar_rankin(nome1, nome2, nome3):
+    aux = [nome1, nome2, nome3]
+    for i in range(len(aux)):
+        txt = open(aux[i], 'r')
+        lista = txt.readlines()
+        txt.close()
+        arq = open(aux[i], 'w')
+        ranking_sort(lista, arq, aux[i])
+        arq.close()
     mostar()
 
 def mostar():
+
+    ## rankin nivel 1 ##
+
     f = open('ranking1.txt', 'r')
     lista = f.readlines()
     lugar1 = lista[0].split()
     lugar2 = lista[1].split()
     lugar3 = lista[2].split()
     pontos1 = lugar1.pop()
-    pontos2 = lugar1.pop()
+    pontos2 = lugar2.pop()
     pontos3 = lugar3.pop()
 
-    nome1 = fonte_basica.render(str(lugar1[0]) ,1 , cor_branca)
-    p1 = fonte_basica.render(str(pontos1), 1, cor_branca)
-    TELA.blit(nome1, (95, 451))
-    TELA.blit(p1, (505, 451))
+    nome1 = fonte_basica.render(str(lugar1[0]) , 1 , cor_bg)
+    p1 = fonte_basica.render(str(pontos1), 1, cor_bg)
+    TELA.blit(nome1, (95, 248))
+    TELA.blit(p1, (515, 248))
+
+    nome2 = fonte_basica.render(str(lugar2[0]), 1, cor_bg)
+    p2 = fonte_basica.render(str(pontos2), 1, cor_bg)
+    TELA.blit(nome2, (95, 272))
+    TELA.blit(p2, (515, 272))
+
+    nome3 = fonte_basica.render(str(lugar3[0]), 1, cor_bg)
+    p3 = fonte_basica.render(str(pontos3), 1, cor_bg)
+    TELA.blit(nome3, (95, 297))
+    TELA.blit(p3, (515, 297))
+
+   ## ranking nivel 2 ##
+
+    g = open('ranking2.txt', 'r')
+    lista = g.readlines()
+    lugar1_2 = lista[0].split()
+    lugar2_2 = lista[1].split()
+    lugar3_2 = lista[2].split()
+    pontos1_2 = lugar1_2.pop()
+    pontos2_2 = lugar2_2.pop()
+    pontos3_2 = lugar3_2.pop()
+
+    nome1_2 = fonte_basica.render(str(lugar1_2[0]), 1, cor_bg)
+    p1_2 = fonte_basica.render(str(pontos1_2), 1, cor_bg)
+    TELA.blit(nome1_2, (95, 407))
+    TELA.blit(p1_2, (515, 407))
+
+    nome2_2 = fonte_basica.render(str(lugar2_2[0]), 1, cor_bg)
+    p2_2 = fonte_basica.render(str(pontos2_2), 1, cor_bg)
+    TELA.blit(nome2_2, (95, 432))
+    TELA.blit(p2_2, (515, 432))
+
+    nome3_2 = fonte_basica.render(str(lugar3_2[0]), 1, cor_bg)
+    p3_2 = fonte_basica.render(str(pontos3_2), 1, cor_bg)
+    TELA.blit(nome3_2, (95, 456))
+    TELA.blit(p3_2, (515, 456))
+
+    ## ranking nivel 3 ##
+
+    h = open('ranking3.txt', 'r')
+    lista = h.readlines()
+    lugar1_3 = lista[0].split()
+    lugar2_3 = lista[1].split()
+    lugar3_3 = lista[2].split()
+    pontos1_3 = lugar1_3.pop()
+    pontos2_3 = lugar2_3.pop()
+    pontos3_3 = lugar3_3.pop()
+
+    nome1_3 = fonte_basica.render(str(lugar1_3[0]), 1, cor_bg)
+    p1_3 = fonte_basica.render(str(pontos1_3), 1, cor_bg)
+    TELA.blit(nome1_3, (95, 565))
+    TELA.blit(p1_3, (515, 565))
+
+    nome2_3 = fonte_basica.render(str(lugar2_3[0]), 1, cor_bg)
+    p2_3 = fonte_basica.render(str(pontos2_3), 1, cor_bg)
+    TELA.blit(nome2_3, (95, 590))
+    TELA.blit(p2_3, (515, 590))
+
+    nome3_3 = fonte_basica.render(str(lugar3_3[0]), 1, cor_bg)
+    p3_3 = fonte_basica.render(str(pontos3_3), 1, cor_bg)
+    TELA.blit(nome3_3, (95, 614))
+    TELA.blit(p3_3, (515, 614))
 
 
 
-
-
-def ranking_sort(lista, arquivo):  ###### FUNÇÃO QUE VAI COLOCAR O RANKING EM ORDEM DESCRECENTE
+def ranking_sort(lista, arquivo, nome):
     aux = []
     for n in range(len(lista)):
-        var = lista[n].split()  #### var = ['ab','-','12']
+        var = lista[n].split()
         aux.append(int(var[len(var) - 1]))
 
     aux.sort()
@@ -527,13 +592,13 @@ def ranking_sort(lista, arquivo):  ###### FUNÇÃO QUE VAI COLOCAR O RANKING EM 
     while len(lista) != 0:
         for n in range(len(lista)):
             auxiliar = lista[n].split()
-            valor = auxiliar[len(auxiliar) - 1]  #### n = 0 , 1 , 2
+            valor = auxiliar[len(auxiliar) - 1]
             if aux[0] == int(valor):
                 arquivo.write(lista[n])
                 break
         aux.remove(aux[0])
         lista.remove(lista[n])
 
-    f = open('renking.txt', 'w+')
+    f = open(nome, 'w+')
     f.write(str(aux))
     f.close()

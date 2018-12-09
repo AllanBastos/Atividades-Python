@@ -1,6 +1,8 @@
-jota k 1000
-allan 200
-allan 0
-allan 0
-allan 0
-jota k 0
+joaquim 7600 
+jão 1400 
+Allan Bastos 800 
+atos 200 
+player 0
+player 0
+player 0
+Allan 0 

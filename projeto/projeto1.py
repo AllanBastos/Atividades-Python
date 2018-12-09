@@ -80,11 +80,10 @@ def menu_ajuda():
 
 
 def menu_raking():
-    print(mostrar_rankin())
     while True:
         fundo = pygame.image.load('menuranking.png')
         TELA.blit(fundo, (0, 0))
-        mostrar_rankin()
+        mostrar_rankin('ranking1.txt', 'ranking2.txt', 'ranking3.txt')
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 terminar()
@@ -252,7 +251,13 @@ def run(modo):
                 pygame.time.delay(1000)
                 pygame.mixer.music.stop()
                 if modo == 1:
-                    add_ranking1(jogador_nivel_1, pontos*100)
+                    add_ranking(jogador_nivel_1, pontos*100, 'ranking1.txt')
+                elif modo == 2:
+                    add_ranking(jogador_nivel_2, pontos*100, 'ranking2.txt')
+                elif modo == 3:
+                    add_ranking(jogador_nivel_3, pontos*100, 'ranking3.txt')
+
+
                 while True:
                     TELA.fill(cor_branca)
                     listatext = ['Precione \'TAB\' para ir para ir para o menu', 'ou',
