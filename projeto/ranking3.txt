@@ -1,4 +1,3 @@
-Ajota 1600 
 player 0
 player 0
 player 0

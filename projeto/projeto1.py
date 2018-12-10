@@ -1,5 +1,7 @@
-
-from projeto.funcionalidades import *
+try:
+    from projeto.funcionalidades import *
+except:
+    from funcionalidades import *
 import random
 import pygame
 pygame.init()

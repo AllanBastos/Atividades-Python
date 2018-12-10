@@ -1,8 +1,3 @@
-joaquim 7600 
-jão 1400 
-Allan Bastos 800 
-atos 200 
 player 0
 player 0
 player 0
-Allan 0 
