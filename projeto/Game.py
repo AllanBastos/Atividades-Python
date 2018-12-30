@@ -104,11 +104,11 @@ def iniciar_jogo(modo):
     texto('TETRIS')
     while True:
 
-        if random.randint(0, 1) == 0:
-            pygame.mixer.music.load('tetrisb.mid')
-        else:
-            pygame.mixer.music.load('tetrisc.mid')
-        pygame.mixer.music.play(-1, 0.0)                                   # aqui ele inicia o jogo chamando uma musica
+        # if random.randint(0, 1) == 0:
+        #     pass #pygame.mixer.music.load('tetrisb.mid')
+        # else:
+        #     pygame.mixer.music.load('tetrisc.mid')
+        # pygame.mixer.music.play(-1, 0.0)                                   # aqui ele inicia o jogo chamando uma musica
 
         if modo == 1:
             run(1)

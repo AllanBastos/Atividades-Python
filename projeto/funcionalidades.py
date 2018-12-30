@@ -462,7 +462,7 @@ def input_texto(TELA):                      # função para pegar o nome do joga
                         texto = texto[:-1]
                     else:
                         texto += event.unicode
-        jogador = pygame.image.load('jogador.png')
+        jogador = pygame.image.load('Jogador.png')
         TELA.blit(jogador, (0, 0))
         # Render the current text.
         txt_surface = font.render(texto, True, cor)
