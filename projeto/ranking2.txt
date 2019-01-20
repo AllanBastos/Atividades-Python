@@ -1,3 +1,8 @@
+Allan 4600 
+Allan 3400 
+Allan 3200 
+Allan 800 
+Allan 400 
 player 0
 player 0
 player 0

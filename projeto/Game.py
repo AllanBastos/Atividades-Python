@@ -274,11 +274,11 @@ def run(modo):                                                               # f
                                 menu_principal()
 
                             elif event.key == pygame.K_SPACE:
-                                if random.randint(0, 1) == 0:
-                                    pygame.mixer.music.load('tetrisb.mid')   # comecar novo jogo
-                                else:
-                                    pygame.mixer.music.load('tetrisc.mid')
-                                pygame.mixer.music.play(-1, 0.0)
+                                # if random.randint(0, 1) == 0:
+                                #     pygame.mixer.music.load('tetrisb.mid')   # comecar novo jogo
+                                # else:
+                                #     pygame.mixer.music.load('tetrisc.mid')
+                                # pygame.mixer.music.play(-1, 0.0)
                                 if modo == 1:
                                     run(1)
                                 elif modo == 2:
