@@ -1,0 +1,5 @@
+Uma implementação é um modo de executar um cálculo;
+algumas implementações são melhores que outras.
+Por exemplo, uma vantagem da implementação de dicionários
+é que não precisamos saber de antemão quais letras aparecem na
+string e só é preciso criar espaço para as letras que realmente venham a aparecer
