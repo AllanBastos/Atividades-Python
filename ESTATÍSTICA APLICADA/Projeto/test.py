@@ -8,57 +8,37 @@ external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 app.layout = html.Div([
-    html.Label('Dropdown'),
+    html.Label('Selecione Categoria'),
     dcc.Dropdown(
         options=[
-            {'label': 'New York City', 'value': 'NYC'},
-            {'label': u'Montréal', 'value': 'MTL'},
-            {'label': 'San Francisco', 'value': 'SF'}
+            {'label': 'Quantidade de acidentes', 'value': '2007'},
+            {'label': 'Montréal', 'value': 'MTL'},
+            {'label': u'San Francisco', 'value': 'SF'}
         ],
         value='MTL'
     ),
 
-    html.Label('Multi-Select Dropdown'),
+    html.Label('SELECIONE O(S) ANO(S)'),
     dcc.Dropdown(
         options=[
-            {'label': 'New York City', 'value': 'NYC'},
-            {'label': u'Montréal', 'value': 'MTL'},
-            {'label': 'San Francisco', 'value': 'SF'}
+            {'label': '2008', 'value': '2008'},
+            {'label': '2009', 'value': '2009'},
+            {'label': '2010', 'value': '2010'},
+            {'label': '2011', 'value': '2011'},
+            {'label': '2012', 'value': '2012'},
+            {'label': '2013', 'value': '2013'},
+            {'label': '2014', 'value': '2014'},
+            {'label': '2015', 'value': '2015'},
+            {'label': '2016', 'value': '2016'},
+            {'label': '2017', 'value': '2017'},
+            {'label': '2018', 'value': '2018'}
         ],
-        value=['MTL', 'SF'],
+        value='MTL',
         multi=True
+
     ),
 
-    html.Label('Radio Items'),
-    dcc.RadioItems(
-        options=[
-            {'label': 'New York City', 'value': 'NYC'},
-            {'label': u'Montréal', 'value': 'MTL'},
-            {'label': 'San Francisco', 'value': 'SF'}
-        ],
-        value='MTL'
-    ),
 
-    html.Label('Checkboxes'),
-    dcc.Checklist(
-        options=[
-            {'label': 'New York City', 'value': 'NYC'},
-            {'label': u'Montréal', 'value': 'MTL'},
-            {'label': 'San Francisco', 'value': 'SF'}
-        ],
-        values=['MTL', 'SF']
-    ),
-
-    html.Label('Text Input'),
-    dcc.Input(value='MTL', type='text'),
-
-    html.Label('Slider'),
-    dcc.Slider(
-        min=0,
-        max=9,
-        marks={i: 'Label {}'.format(i) if i == 1 else str(i) for i in range(1, 6)},
-        value=5,
-    ),
 ], style={'columnCount': 2})
 
 if __name__ == '__main__':
