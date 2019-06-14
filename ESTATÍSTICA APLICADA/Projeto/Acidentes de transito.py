@@ -21,6 +21,6 @@ df10 = pd.read_csv('csv/datatran2016.csv')
 df11 = pd.read_csv('csv/datatran2017.csv')
 df12 = pd.read_csv('csv/datatran2018.csv')
 
-print(df1, df2, df3, df4)
+
 
 
