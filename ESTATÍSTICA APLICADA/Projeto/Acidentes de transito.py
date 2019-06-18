@@ -33,6 +33,11 @@ def criar_grafico_bar(ano, df):
         )
     ]
 
+def criar_grafico_bar_uf(ano, df):
+    l = ((df[df['ano'] == ano].uf).value_counts())
+    return {
+        l.plot.bar(stacked=True)
+    }
 
 df = pd.read_csv('csv/datatranAll.csv', low_memory=False)
 
@@ -72,7 +77,7 @@ app.layout = html.Div([
             {'label': '2017', 'value': 2017},
             {'label': '2018', 'value': 2018}
         ],
-        value='2014',
+        value='2008',
         multi=True
 
     ),
@@ -87,6 +92,9 @@ app.layout = html.Div([
 def update_output(categoria, ano):
     if categoria == 'qnt_a':
        return criar_grafico_bar(ano, df)
+
+    if categoria == 'uf':
+        return criar_grafico_bar_uf(ano, df)
 
 
 if __name__ == '__main__':
