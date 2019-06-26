@@ -1,22 +1,40 @@
+                  # Projeto de estatistica do segundo periodo de Engenharia de Computação
+# Codigo comentado
+# Criando Dashboard, com o intuito de facilitar a leitura dos dados de acidentes da Policia Rodoviaria Federal
+# desenvolvido pelos alunos do Instituto Federal de Ciencia e Tecnologia da Paraiba, do segundo periodo do curso
+# de Engenharia de Computação
+# Discentes: Allan dos Santos Batista Bastos, e Erica Clementino de Carvalho
+# Docente orientador: Dr. Paulo Ribeiro Lins Junior.
+
+
+
 # -*- coding: utf-8 -*-
 
-import pprint
+
+# importando as bibliotecas necessarias para a manipulação dos dados
+# no csv e a criação do dashboard
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
 import plotly.graph_objs as go
 import pandas as pd
-import matplotlib.pyplot as plt
-import  plotly.plotly as py
-import  plotly.tools as tls
+                  # importando as bibliotecas necessarias para a manipulação dos dados
+                  # no csv e a criação do dashboard
+                  import dash
+                  import dash_core_components as dcc
+                  import dash_html_components as html
+                  import pandas as pd
+                  import plotly.graph_objs as go
+                  from dash.dependencies import Input, Output
 
+                  cat = 0
 
-cat = 0
-
+# essa função cria o grafico que será exibido na categoria "acidentes total por ano"
 def criar_grafico_bar(ano, df):
     trace = []
 
+    # Criando os traços que será formado as barras no grafico em barra
     if list != type(ano):
         trace.append(go.Bar(x=[ano], y=[len(df[df['ano'] == ano])], name=ano))
     else:
@@ -27,7 +45,7 @@ def criar_grafico_bar(ano, df):
                     y=[len(df[df['ano'] == ano[i]])],
                     name=(ano[i])),
             )
-
+    # criando a figura do grafico em barra
     return [
         dcc.Graph(
             id='example-graph',
@@ -41,6 +59,7 @@ def criar_grafico_bar(ano, df):
     ]
 
 
+# essa função cria o grafico que será exibido na categoria "acidentes total por estado"
 def criar_grafico_bar2(uf, df):
     trace = []
     uf = list(uf)
@@ -67,6 +86,7 @@ def criar_grafico_bar2(uf, df):
     ]
 
 
+# essa função cria o grafico que será exibido na categoria "Acidentes por dia da semana no ano"
 def criar_grafico_bar3(ano, uf, df):
     trace = []
 
@@ -90,6 +110,8 @@ def criar_grafico_bar3(ano, uf, df):
         )
     ]
 
+
+# essa função cria o grafico que será exibido na categoria "Acidentes por ano e estado"
 def criar_grafico_bar4(ano, df, uf):
     trace = []
     d = df.dia_semana.unique()
@@ -125,6 +147,7 @@ def criar_grafico_bar4(ano, df, uf):
     ]
 
 
+# importando o csv modificado com todos os dados do ano de 2007 a 2018 da PRF e criando o DataFrame
 df = pd.read_csv('csv/datatranAll.csv', low_memory=False)
 
 
@@ -133,8 +156,11 @@ external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
+# crinado o layout utilizado no dashboard
 app.layout = html.Div([
     html.Label('SELECIONE A CATEGORIA'),
+
+    # caixa de dialogo que seleciona a categoria desejada
     dcc.Dropdown(
         id='categorias',
         options=[
@@ -147,27 +173,28 @@ app.layout = html.Div([
         ],
         value='qnt_a'
     ),
+    # retorna  a proxima caixa de seleção
     html.Div(id='minha-saida'),
 
     html.Hr(),
 
-
+    # retorna o grafico desejado
     html.Div(id='minha-saida2'),
 
 ])
 
 
-
-
-
+# retorana as entradas da caixa de dialogo que escolhe as categorias
 @app.callback(Output('minha-saida', 'children'),
               [Input(component_id='categorias', component_property='value')])
+# função para que retorna a proxima caixa de dialogo para "minha-saida"
 def update_output(categoria):
     global cat
     if categoria == 'qnt_a':
         cat = 1
         return (
                 html.Label('SELECIONE O(S) ANO(S)'),
+                # Seleciona os anos para a primeira categoria
                 dcc.Dropdown(
                     id='ano',
                     options=[
@@ -196,6 +223,7 @@ def update_output(categoria):
         return (
                 dcc.Upload(id='ano'),
                 html.Label('SELECIONE O(S) ESTADO(S)'),
+                # seleciona os estados para a segunda categoria
                 dcc.Dropdown(
                     id='sel_uf',
                     options=[{'label': 'MG', 'value': 'MG'},
@@ -237,6 +265,8 @@ def update_output(categoria):
         cat = 2
         return (
                html.Label('SELECIONE O ANO'),
+
+               # seleciona o ano para a 3 categoria
                dcc.Dropdown(
                    id='ano',
                    options=[
@@ -258,6 +288,8 @@ def update_output(categoria):
                ),
 
                 html.Label('SELECIONE O(S) ESTADO(S)'),
+
+               # seleciona o estado para a 3 categoria
                 dcc.Dropdown(
                     id='sel_uf',
                     options=[{'label': 'MG', 'value': 'MG'},
@@ -297,6 +329,8 @@ def update_output(categoria):
         cat = 3
         return (
             html.Label('SELECIONE O ANO'),
+
+            # Seleciona o ano para 4 categoria
             dcc.Dropdown(
                 id='ano',
                 options=[
@@ -317,6 +351,8 @@ def update_output(categoria):
 
             ),
             html.Label('TODOS OS ANOS ?'),
+
+            # caixa se seleciona todos os anos ou não
             dcc.RadioItems(
                 id='sel_uf',
                 options=[{'label': i, 'value': i} for i in ['sim', 'não']],
@@ -329,9 +365,11 @@ def update_output(categoria):
 
 app.config['suppress_callback_exceptions'] = True
 
+# recebe as entradas das funções mencionadas na "minha-saida"
 @app.callback(Output('minha-saida2', 'children'),
               [Input(component_id='ano', component_property='value'),
                Input(component_id='sel_uf', component_property='value')])
+# gera o grafico de acordo com a categoria desejada
 def gerar_grafico(ano, uf):
 
     if cat == 1:
