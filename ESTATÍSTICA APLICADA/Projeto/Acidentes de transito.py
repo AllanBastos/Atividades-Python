@@ -16,19 +16,11 @@
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
-from dash.dependencies import Input, Output
-import plotly.graph_objs as go
 import pandas as pd
-                  # importando as bibliotecas necessarias para a manipulação dos dados
-                  # no csv e a criação do dashboard
-                  import dash
-                  import dash_core_components as dcc
-                  import dash_html_components as html
-                  import pandas as pd
-                  import plotly.graph_objs as go
-                  from dash.dependencies import Input, Output
+import plotly.graph_objs as go
+from dash.dependencies import Input, Output
 
-                  cat = 0
+cat = 0
 
 # essa função cria o grafico que será exibido na categoria "acidentes total por ano"
 def criar_grafico_bar(ano, df):
