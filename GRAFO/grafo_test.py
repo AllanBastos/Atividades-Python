@@ -1,5 +1,6 @@
 import unittest
-from grafo import *
+
+from grafo import Grafo
 
 class TestGrafo(unittest.TestCase):
 

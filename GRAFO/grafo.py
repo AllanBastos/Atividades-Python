@@ -13,8 +13,8 @@ class Grafo:
         '''
         Constrói um objeto do tipo Grafo. Se nenhum parâmetro for passado, cria um Grafo vazio.
         Se houver alguma aresta ou algum vértice inválido, uma exceção é lançada.
-        :param N: Uma lista dos vértices (ou nodos) do grafo.
-        :param V: Uma dicionário que guarda as arestas do grafo. A chave representa o nome da aresta e o valor é uma string que contém dois vértices separados por um traço.
+        :param N: Uma lista dos vértices (ou nodos) do GRAFO.
+        :param V: Uma dicionário que guarda as arestas do GRAFO. A chave representa o nome da aresta e o valor é uma string que contém dois vértices separados por um traço.
         '''
         for v in N:
             if not(Grafo.verticeValido(v)):
@@ -35,7 +35,7 @@ class Grafo:
         a é um substring de aresta que é o nome de um vértice adjacente à aresta.
         - é um caractere separador. Uma aresta só pode ter um único caractere como esse.
         b é um substring de aresta que é o nome do outro vértice adjacente à aresta.
-        Além disso, uma aresta só é válida se conectar dois vértices existentes no grafo.
+        Além disso, uma aresta só é válida se conectar dois vértices existentes no GRAFO.
         :param aresta: A aresta que se quer verificar se está no formato correto.
         :return: Um valor booleano que indica se a aresta está no formato correto.
         '''
@@ -69,17 +69,17 @@ class Grafo:
 
     def existeVertice(self, vertice=''):
         '''
-        Verifica se um vértice passado como parâmetro pertence ao grafo.
+        Verifica se um vértice passado como parâmetro pertence ao GRAFO.
         :param vertice: O vértice que deve ser verificado.
-        :return: Um valor booleano que indica se o vértice existe no grafo.
+        :return: Um valor booleano que indica se o vértice existe no GRAFO.
         '''
         return Grafo.verticeValido(vertice) and self.N.count(vertice) > 0
 
     def existeAresta(self, aresta=''):
         '''
-        Verifica se uma aresta passada como parâmetro pertence ao grafo.
+        Verifica se uma aresta passada como parâmetro pertence ao GRAFO.
         :param aresta: A aresta a ser verificada
-        :return: Um valor booleano que indica se a aresta existe no grafo.
+        :return: Um valor booleano que indica se a aresta existe no GRAFO.
         '''
         existe = False
         if Grafo.arestaValida(self, aresta):
@@ -111,11 +111,28 @@ class Grafo:
         else:
             ArestaInvalidaException('A aresta ' + self.A[a] + ' é inválida')
 
+
+                                       ##### minhas funções #####
+
+    def vertices_nao_adjacentes(self):
+        vertices = self.N
+        arestas = self.A.values()
+        nao_adjacentes = []
+        for i in vertices:
+            for j in vertices:
+                verificar_indo = "{}-{}" .format(i, j)
+                verificar_vindo = "{}-{}" .format(j, i)
+                if verificar_indo not in arestas and verificar_vindo not in arestas:
+                    nao_adjacentes.append(verificar_indo)
+        return nao_adjacentes
+
+
+
     def __str__(self):
         '''
-        Fornece uma representação do tipo String do grafo.
+        Fornece uma representação do tipo String do GRAFO.
         O String contém um sequência dos vértices separados por vírgula, seguido de uma sequência das arestas no formato padrão.
-        :return: Uma string que representa o grafo
+        :return: Uma string que representa o GRAFO
         '''
         grafo_str = ''
 
