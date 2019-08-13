@@ -127,6 +127,40 @@ class Grafo:
         return nao_adjacentes
 
 
+    def ha_laco(self):
+        arestas = self.A.values()
+        for i in arestas:
+            a, b = i.split('-')
+            if a == b:
+                return True
+        return False
+
+
+    def ha_paralelas(self):
+        arestas = list(self.A.values())
+        arestas_ao_contrario = []
+        cont = 0
+        for i in arestas:
+            a, b = i.split('-')
+            arestas_ao_contrario.append('{}-{}'.format(b,a))
+
+        for i in range(len(arestas)):
+            for j in range(len(arestas)):
+                if arestas[i] == arestas[j] or arestas_ao_contrario == arestas[i]:
+                    cont += 1
+        if cont > len(arestas):
+            return True
+        return False
+
+
+    def grau(self):
+                                 ##### fim das minhas funções #####
+
+
+
+
+
+
 
     def __str__(self):
         '''
