@@ -164,6 +164,20 @@ class Grafo:
         return cont
 
 
+    def arestas_sobre_vertice(self, v):
+        incidentes = []
+        arestas = list(self.A.values())
+        key = list(self.A.keys())
+
+        for i in range(len(arestas)):
+            a, b = arestas[i].split('-')
+            if a == v or b == v:
+                incidentes.append(key[i])
+
+
+        return incidentes
+
+
                                  ##### fim das minhas funções #####
 
 
