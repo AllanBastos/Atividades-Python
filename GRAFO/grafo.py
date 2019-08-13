@@ -153,7 +153,17 @@ class Grafo:
         return False
 
 
-    def grau(self):
+    def grau(self, v):
+        cont = 0
+        arestas = list(self.A.values())
+
+        for i in arestas:
+            a, b = i.split('-')
+            if a == v or b == v:
+                cont += 1
+        return cont
+
+
                                  ##### fim das minhas funções #####
 
 
