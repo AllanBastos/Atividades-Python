@@ -4,6 +4,7 @@ vertices = ['J', 'C', 'E', 'P', 'M', 'T', 'Z']
 arestas = {'a1': 'J-C', 'a2': 'C-E', 'a3': 'C-E', 'a4':'C-P', 'a5':'C-P', 'a6':'C-M',
            'a7': 'C-T', 'a8': 'M-T', 'a9': 'T-Z'}
 
+
 paraiba = Grafo(vertices, arestas)
 
-print(paraiba.arestas_sobre_vertice("M"))
+print(paraiba.eh_completo())

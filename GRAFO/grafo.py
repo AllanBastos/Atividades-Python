@@ -174,9 +174,13 @@ class Grafo:
             if a == v or b == v:
                 incidentes.append(key[i])
 
-
         return incidentes
 
+
+    def eh_completo(self):
+        if len(self.vertices_nao_adjacentes()) > len(self.N):
+            return False
+        return True
 
                                  ##### fim das minhas funções #####
 
