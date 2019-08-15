@@ -176,10 +176,27 @@ class Grafo:
 
         return incidentes
 
+    def so_ha_laco(self):
+        vertices = self.N
+        arestas = self.A.values()
+
+        for i in vertices:
+            for j in vertices:
+                verificar = "{}-{}".format(i, j)
+                if i != j and verificar in arestas:
+                    return False
+        return True
+
+
 
     def eh_completo(self):
-        if len(self.vertices_nao_adjacentes()) > len(self.N):
+        n_ver_na = len(self.vertices_nao_adjacentes())
+        n_ver = len(self.N)
+        if n_ver == 1:
+            return True
+        elif n_ver_na > n_ver or (self.so_ha_laco()):
             return False
+
         return True
 
                                  ##### fim das minhas funções #####

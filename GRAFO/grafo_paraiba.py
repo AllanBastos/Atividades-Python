@@ -1,10 +1,10 @@
 from grafo import Grafo
 
-vertices = ['J', 'C', 'E', 'P', 'M', 'T', 'Z']
-arestas = {'a1': 'J-C', 'a2': 'C-E', 'a3': 'C-E', 'a4':'C-P', 'a5':'C-P', 'a6':'C-M',
-           'a7': 'C-T', 'a8': 'M-T', 'a9': 'T-Z'}
-
-
+# vertices = ['J', 'C', 'E', 'P', 'M', 'T', 'Z']
+# arestas = {'a1': 'J-C', 'a2': 'C-E', 'a3': 'C-E', 'a4':'C-P', 'a5':'C-P', 'a6':'C-M',
+#            'a7': 'C-T', 'a8': 'M-T', 'a9': 'T-Z'}
+vertices = ['J', 'B']
+arestas = {'a1': "J-J", 'a2':'B-B'}
 paraiba = Grafo(vertices, arestas)
 
 print(paraiba.eh_completo())
