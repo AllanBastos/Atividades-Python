@@ -200,15 +200,21 @@ class Grafo:
         return True
 
 
-    def buscar_profundidade_dfs(self, raiz, dfs):
+    def buscar_profundidade_dfs(self, raiz, dfs=[]):
 
         av = self.arestas_sobre_vertice(raiz)
-        dfs.append(raiz)
+
         for i in av:
-            if (i not in dfs):
-                dfs.append(i)
-                a, j = self.A.pop(i).split("-")
-                self.buscar_profundidade_dfs(j, dfs)
+            if i not in dfs:
+                if len(dfs) == 0:
+                    dfs.append(raiz)
+                a, j = self.A[i].split("-")
+                if raiz == j:
+                    a, j = j, a
+                if (raiz not in dfs or j not in dfs) :
+                    dfs.append(i)
+                    dfs.append(j)
+                    self.buscar_profundidade_dfs(j, dfs)
 
         return dfs
 

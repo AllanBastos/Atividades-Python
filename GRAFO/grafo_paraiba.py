@@ -9,6 +9,7 @@ arestas = {'a1': 'J-C', 'a2': 'C-E', 'a3': 'C-E', 'a4':'C-P', 'a5':'C-P', 'a6':'
 
 paraiba = Grafo(vertices, arestas)
 
-lista1 = []
 
-print(paraiba.buscar_profundidade_dfs("J", lista1))
+print(paraiba.buscar_profundidade_dfs("J"))
+
+
