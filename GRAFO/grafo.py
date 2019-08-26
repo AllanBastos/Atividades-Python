@@ -1,7 +1,3 @@
-import random
-
-from grafo_adj import GrafoDirecionado
-
 class VerticeInvalidoException(Exception):
     pass
 
@@ -204,23 +200,17 @@ class Grafo:
         return True
 
 
-    def buscar_profundidade_dfs(self):
-        vertices = self.N
-        arestas_n_adj = self.A.keys()
+    def buscar_profundidade_dfs(self, raiz, dfs):
 
+        av = self.arestas_sobre_vertice(raiz)
+        dfs.append(raiz)
+        for i in av:
+            if (i not in dfs):
+                dfs.append(i)
+                a, j = self.A.pop(i).split("-")
+                self.buscar_profundidade_dfs(j, dfs)
 
-        arestas_adj = []
-        vertices_arv = []
-        arestas_return = []
-        r = random.choice(vertices)
-
-        verificados = []
-
-
-    def busca_profundidade(self, raiz):
-        pass
-
-
+        return dfs
 
                                  ##### fim das minhas funções #####
 
