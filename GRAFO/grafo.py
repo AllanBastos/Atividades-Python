@@ -1,29 +1,30 @@
 class VerticeInvalidoException(Exception):
     pass
 
+
 class ArestaInvalidaException(Exception):
     pass
 
-class Grafo:
 
+class Grafo:
     QTDE_MAX_SEPARADOR = 1
     SEPARADOR_ARESTA = '-'
 
     def __init__(self, N=[], A={}):
-        '''
+        """
         Constrói um objeto do tipo Grafo. Se nenhum parâmetro for passado, cria um Grafo vazio.
         Se houver alguma aresta ou algum vértice inválido, uma exceção é lançada.
         :param N: Uma lista dos vértices (ou nodos) do GRAFO.
         :param V: Uma dicionário que guarda as arestas do GRAFO. A chave representa o nome da aresta e o valor é uma string que contém dois vértices separados por um traço.
-        '''
+        """
         for v in N:
-            if not(Grafo.verticeValido(v)):
+            if not (Grafo.verticeValido(v)):
                 raise VerticeInvalidoException('O vértice ' + v + ' é inválido')
 
         self.N = N
 
         for a in A:
-            if not(self.arestaValida(A[a])):
+            if not (self.arestaValida(A[a])):
                 raise ArestaInvalidaException('A aresta ' + A[a] + ' é inválida')
 
         self.A = A
@@ -52,7 +53,7 @@ class Grafo:
             return False
 
         # Verifica se as arestas antes de depois do elemento separador existem no Grafo
-        if not(self.existeVertice(aresta[:i_traco])) or not(self.existeVertice(aresta[i_traco+1:])):
+        if not (self.existeVertice(aresta[:i_traco])) or not (self.existeVertice(aresta[i_traco + 1:])):
             return False
 
         return True
@@ -101,18 +102,17 @@ class Grafo:
             raise VerticeInvalidoException('O vértice ' + v + ' é inválido')
 
     def adicionaAresta(self, nome, a):
-        '''
+        """
         Adiciona uma aresta no Grafo caso a aresta seja válida e não exista outra aresta com o mesmo nome
         :param v: A aresta a ser adicionada
         :raises: ArestaInvalidaException se a aresta passada como parâmetro não puder ser adicionada
-        '''
+        """
         if self.arestaValida(a):
             self.A[nome] = a
         else:
             ArestaInvalidaException('A aresta ' + self.A[a] + ' é inválida')
 
-
-                                       ##### minhas funções #####
+            ##### minhas funções #####
 
     def vertices_nao_adjacentes(self):
         vertices = self.N
@@ -120,12 +120,11 @@ class Grafo:
         nao_adjacentes = []
         for i in vertices:
             for j in vertices:
-                verificar_indo = "{}-{}" .format(i, j)
-                verificar_vindo = "{}-{}" .format(j, i)
+                verificar_indo = "{}-{}".format(i, j)
+                verificar_vindo = "{}-{}".format(j, i)
                 if verificar_indo not in arestas and verificar_vindo not in arestas:
                     nao_adjacentes.append(verificar_indo)
         return nao_adjacentes
-
 
     def ha_laco(self):
         arestas = self.A.values()
@@ -135,14 +134,13 @@ class Grafo:
                 return True
         return False
 
-
     def ha_paralelas(self):
         arestas = list(self.A.values())
         arestas_ao_contrario = []
         cont = 0
         for i in arestas:
             a, b = i.split('-')
-            arestas_ao_contrario.append('{}-{}'.format(b,a))
+            arestas_ao_contrario.append('{}-{}'.format(b, a))
 
         for i in range(len(arestas)):
             for j in range(len(arestas)):
@@ -151,7 +149,6 @@ class Grafo:
         if cont > len(arestas):
             return True
         return False
-
 
     def grau(self, v):
         cont = 0
@@ -162,7 +159,6 @@ class Grafo:
             if a == v or b == v:
                 cont += 1
         return cont
-
 
     def arestas_sobre_vertice(self, v):
         incidentes = []
@@ -187,8 +183,6 @@ class Grafo:
                     return False
         return True
 
-
-
     def eh_completo(self):
         n_ver_na = len(self.vertices_nao_adjacentes())
         n_ver = len(self.N)
@@ -199,8 +193,10 @@ class Grafo:
 
         return True
 
-
     def buscar_profundidade_dfs(self, raiz, dfs=[]):
+
+        if raiz not in self.N:
+            return None
 
         av = self.arestas_sobre_vertice(raiz)
 
@@ -211,20 +207,17 @@ class Grafo:
                 a, j = self.A[i].split("-")
                 if raiz == j:
                     a, j = j, a
-                if (raiz not in dfs or j not in dfs) :
+                if (raiz not in dfs or j not in dfs):
                     dfs.append(i)
                     dfs.append(j)
                     self.buscar_profundidade_dfs(j, dfs)
 
+        if raiz == dfs[0]:
+            aux = dfs.copy()
+            dfs.clear()
+            return aux
         return dfs
-
-                                 ##### fim das minhas funções #####
-
-
-
-
-
-
+        ##### fim das minhas funções #####
 
     def __str__(self):
         '''
@@ -243,38 +236,7 @@ class Grafo:
 
         for i, a in enumerate(self.A):
             grafo_str += self.A[a]
-            if not(i == len(self.A) - 1): # Só coloca a vírgula se não for a última aresta
+            if not (i == len(self.A) - 1):  # Só coloca a vírgula se não for a última aresta
                 grafo_str += ", "
 
         return grafo_str
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
