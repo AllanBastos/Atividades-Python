@@ -30,7 +30,7 @@ class Grafo:
         self.A = A
 
     def arestaValida(self, aresta=''):
-        '''
+        """
         Verifica se uma aresta passada como parâmetro está dentro do padrão estabelecido.
         Uma aresta é representada por um string com o formato a-b, onde:
         a é um substring de aresta que é o nome de um vértice adjacente à aresta.
@@ -39,7 +39,7 @@ class Grafo:
         Além disso, uma aresta só é válida se conectar dois vértices existentes no GRAFO.
         :param aresta: A aresta que se quer verificar se está no formato correto.
         :return: Um valor booleano que indica se a aresta está no formato correto.
-        '''
+        """
 
         # Não pode haver mais de um caractere separador
         if aresta.count(Grafo.SEPARADOR_ARESTA) != Grafo.QTDE_MAX_SEPARADOR:
@@ -217,6 +217,8 @@ class Grafo:
             dfs.clear()
             return aux
         return dfs
+
+
         ##### fim das minhas funções #####
 
     def __str__(self):
