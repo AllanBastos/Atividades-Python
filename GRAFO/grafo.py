@@ -194,12 +194,9 @@ class Grafo:
         return True
 
     def buscar_profundidade_dfs(self, raiz, dfs=[]):
-
         if raiz not in self.N:
             return None
-
         av = self.arestas_sobre_vertice(raiz)
-
         for i in av:
             if i not in dfs:
                 if len(dfs) == 0:
@@ -211,12 +208,41 @@ class Grafo:
                     dfs.append(i)
                     dfs.append(j)
                     self.buscar_profundidade_dfs(j, dfs)
-
         if raiz == dfs[0]:
             aux = dfs.copy()
             dfs.clear()
             return aux
         return dfs
+
+    def ciclo(self, raiz, dfs=[]):
+        av = self.arestas_sobre_vertice(raiz)
+        for i in av:
+            if i not in dfs:
+                if len(dfs) == 0:
+                    dfs.append(raiz)
+                k, j = self.A[i].split("-")
+
+                if j not in dfs:
+                    dfs.append(i)
+                    dfs.append(j)
+                    self.buscar_profundidade_dfs(j, dfs)
+                if raiz == dfs[0]:
+                    aux = dfs.copy()
+                    dfs.clear()
+                    aux.append(raiz)
+                    return aux
+        return None
+
+    def ha_ciclo(self):
+        ciclo = []
+        vertices = self.N
+
+        for a in vertices:
+            ciclo = self.ciclo(a)
+            if ciclo != None:
+                return ciclo
+        return False
+
 
 
         ##### fim das minhas funções #####

@@ -12,8 +12,4 @@ grafo = Grafo(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'],
 
 paraiba = Grafo(vertices, arestas)
 
-print(paraiba.buscar_profundidade_dfs("P"))
-print(paraiba.buscar_profundidade_dfs("M"))
-print(paraiba.buscar_profundidade_dfs("B"))
-
-print(grafo.buscar_profundidade_dfs("K"))
+print(paraiba.ha_ciclo())
