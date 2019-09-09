@@ -214,23 +214,19 @@ class Grafo:
             return aux
         return dfs
 
-    def ciclo(self, raiz, dfs=[]):
+    def ciclo(self, raiz, ciclo=[]):
         av = self.arestas_sobre_vertice(raiz)
         for i in av:
-            if i not in dfs:
-                if len(dfs) == 0:
-                    dfs.append(raiz)
-                k, j = self.A[i].split("-")
-
-                if j not in dfs:
-                    dfs.append(i)
-                    dfs.append(j)
-                    self.buscar_profundidade_dfs(j, dfs)
-                if raiz == dfs[0]:
-                    aux = dfs.copy()
-                    dfs.clear()
-                    aux.append(raiz)
-                    return aux
+            if i not in ciclo:
+                if raiz not in ciclo:
+                    ciclo.append(raiz)
+                    ciclo.append(i)
+                    k, j = self.A[i].split("-")
+                    if j not in ciclo:
+                        self.ciclo(j)
+                elif raiz == ciclo[0]:
+                    return ciclo
+        ciclo.clear()
         return None
 
     def ha_ciclo(self):
