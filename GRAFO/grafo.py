@@ -216,6 +216,8 @@ class Grafo:
 
     def ciclo(self, raiz, ciclo=[]):
         av = self.arestas_sobre_vertice(raiz)
+        if len(av) == 1:
+            return None
         for i in av:
             if i not in ciclo:
                 if raiz not in ciclo:
