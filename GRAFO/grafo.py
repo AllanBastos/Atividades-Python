@@ -214,34 +214,174 @@ class Grafo:
             return aux
         return dfs
 
-    def ciclo(self, raiz, ciclo=[]):
-        av = self.arestas_sobre_vertice(raiz)
-        if len(av) == 1:
-            return None
-        for i in av:
-            if i not in ciclo:
-                if raiz not in ciclo:
-                    ciclo.append(raiz)
-                    ciclo.append(i)
-                    k, j = self.A[i].split("-")
-                    if j not in ciclo:
-                        self.ciclo(j)
-                elif raiz == ciclo[0]:
-                    return ciclo
-        ciclo.clear()
-        return None
+    def ciclo(self):
+
+        av = self.A.items()  # Contém chave de ligação entre aresta e vertice
+        vertices = self.N  # Lista de vertices
+
+        import random  # Definir o vertice da raiz
+
+        lista_ciclo = []  # Final do laço
+        vertices_proib = []  # vertices a desconsiderar
+        arestas_proib = []  # arestas a descconsiderar
+        vertice_prox = random.choice(vertices)  # Próximo vertice a ser buscado
+        while True:
+            eh = False  # Auxiliar de busca
+
+            for e in av:
+                # Varrendo posições
+                aresta = e[0]
+                v1 = e[1][0]
+                v2 = e[1][2]
+                # Se meu vertice 1 é igual meu vertice de procura
+                if (v1 == vertice_prox):
+                    if (v1 not in lista_ciclo and v1 not in vertices_proib):
+                        lista_ciclo.append(v1)
+                    if (aresta not in lista_ciclo and aresta not in arestas_proib):
+                        lista_ciclo.append(aresta)
+                        if (v2 not in lista_ciclo and v2 not in vertices_proib):
+                            lista_ciclo.append(v2)
+                            vertice_prox = v2
+                            eh = True
+                            break
+                        else:
+                            lista_ciclo.append(v2)
+                            return lista_ciclo
+
+            if not eh:
+                for e in av:
+                    aresta = e[0]
+                    v1 = e[1][0]
+                    v2 = e[1][2]
+                    if (v2 == vertice_prox):
+                        if (v2 not in lista_ciclo and v2 not in vertices_proib):
+                            lista_ciclo.append(v2)
+                        if (aresta not in lista_ciclo and aresta not in arestas_proib):
+                            lista_ciclo.append(aresta)
+                            if (v1 not in lista_ciclo and v1 not in vertices_proib):
+                                lista_ciclo.append(v1)
+                                vertice_prox = v1
+                                eh = True
+                                break
+                            else:
+                                lista_ciclo.append(v1)
+                                return lista_ciclo
+
+            if not eh:
+                if (len(lista_ciclo) > 1):
+                    vertices_proib.append(lista_ciclo.pop())
+                    arestas_proib.append(lista_ciclo.pop())
+                    vertice_prox = lista_ciclo[-1]
+                else:
+                    return False
 
     def ha_ciclo(self):
-        ciclo = []
-        vertices = self.N
 
-        for a in vertices:
-            ciclo = self.ciclo(a)
-            if ciclo != None:
-                return ciclo
+        ha_ciclo = self.ciclo()  # Usa ciclo com auxiliar nas funções de verificar se tem ou não ciclo
+        lista_ciclo = []  # Vertices e arestas do ciclo
+        ciclo_inicial = False  # Ponto inicial
+        if ha_ciclo:  # Teste se ha_ciclo não é null
+            for e in ha_ciclo:  # Se ha_ciclo for verdade, nesta linha ele irá percorrer
+                if (e == ha_ciclo[-1]):  # Quando encontrar
+                    ciclo_inicial = True  # Será o marco inicial
+                if ciclo_inicial:
+                    lista_ciclo.append(e)  # Começa adicionar elementos
+            return lista_ciclo
         return False
 
+    def caminho_entre_dois(self, x, y):
 
+        av = self.A.items()  # Dicionário demostra as arestas com as suas chaves de ligação
+        vertices_ligados = self.N  # Vertices do grafo
+
+        # Preciso verificar se os vertices existe
+
+        if x not in vertices_ligados or y not in vertices_ligados:
+            return False
+
+        lista_caminho = []
+        vertices_prob = []
+        arestas_prob = []
+        vertices_prox = x
+
+        while True:
+            if (len(lista_caminho) > 0 and lista_caminho[0] == x and lista_caminho[-1] == y):
+                return lista_caminho
+
+            else:
+                eh = False
+
+                for e in av:
+                    aresta = e[0]
+                    v1 = e[1][0]
+                    v2 = e[1][2]
+
+                    if (v1 == vertices_prox):
+                        if (v1 not in lista_caminho and v1 not in vertices_prob):
+                            lista_caminho.append(v1)
+
+                        if (aresta not in lista_caminho and aresta not in arestas_prob):
+                            lista_caminho.append(aresta)
+                            if (v2 not in lista_caminho and v2 not in vertices_prob):
+                                lista_caminho.append(v2)
+                                vertices_prox = v2
+                                eh = True
+                                break
+                            else:
+                                arestas_prob.append(lista_caminho.pop())
+
+                if not eh:
+                    for e in av:
+                        aresta = e[0]
+                        v1 = e[1][0]
+                        v2 = e[1][2]
+
+                        if (v2 == vertices_prox):
+                            if (v2 not in lista_caminho and v2 not in vertices_prob):
+                                lista_caminho.append(v2)
+
+                            if (aresta not in lista_caminho and aresta not in arestas_prob):
+                                lista_caminho.append(aresta)
+                                if (v1 not in lista_caminho and v1 not in vertices_prob):
+                                    lista_caminho.append(v1)
+                                    vertices_prox = v1
+                                    eh = True
+                                    break
+                                else:
+                                    arestas_prob.append(lista_caminho.pop())
+                if not eh:
+                    if (len(lista_caminho) > 1):
+                        # Para iniciar a busca pelo ultimos
+                        vertices_prob.append(lista_caminho.pop())
+                        arestas_prob.append(lista_caminho.pop())
+                        vertices_prox = lista_caminho[-1]
+
+                    else:
+                        return False
+
+    def caminho(self, n):
+
+        vertices_ligados = self.N
+
+        for v1 in vertices_ligados:
+            for v2 in vertices_ligados:
+                av = self.caminho_entre_dois(v1, v2)
+                if (n * 2 + 1 == len(av)):
+                    return av
+        return False
+
+    def conexo(self):
+
+        vertices_ligados = self.N
+
+        # Verificar os caminhos entre os vertices
+        for v1 in vertices_ligados:
+            for v2 in vertices_ligados:
+                if (not self.caminho_entre_dois(v1, v2)):
+                    # Se não existir um caminho entre dois vertices retornará falso
+                    # Se existir retorna verdadeiro depois de verificar todos os caminhos
+                    return False
+        return True
 
         ##### fim das minhas funções #####
 
