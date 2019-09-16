@@ -13,18 +13,20 @@ grafo = Grafo(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'],
                '16': 'D-B', '17': 'B-E'})
 
 test1 = Grafo(["A", "B", "C"], {'1': "A-B"})
+print(paraiba)
 
-#testando ciclo
-print(test1.ciclo())
-print(paraiba.ciclo())
-print(grafo.ciclo())
+# #testando ciclo
+# print(test1.ciclo())
+# print(paraiba.ciclo())
+# print(grafo.ciclo())
+#
+# #testando caminho entre dois vertices
+# print(test1.caminho_entre_dois("A", "C"))
+# print(paraiba.caminho_entre_dois("J", "Z"))
+# print(grafo.caminho_entre_dois("A", "K"))
+#
+# #testando conexão
+# print(paraiba.conexo())
+# print(grafo.conexo())
+# print(test1.conexo())
 
-#testando caminho entre dois vertices
-print(test1.caminho_entre_dois("A", "C"))
-print(paraiba.caminho_entre_dois("J", "Z"))
-print(grafo.caminho_entre_dois("A", "K"))
-
-#testando conexão
-print(paraiba.conexo())
-print(grafo.conexo())
-print(test1.conexo())

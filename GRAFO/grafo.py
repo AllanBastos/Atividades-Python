@@ -60,12 +60,13 @@ class Grafo:
 
     @classmethod
     def verticeValido(self, vertice=''):
-        '''
+
+        """
         Verifica se um vértice passado como parâmetro está dentro do padrão estabelecido.
         Um vértice é um string qualquer que não pode ser vazio e nem conter o caractere separador.
         :param vertice: Um string que representa o vértice a ser analisado.
         :return: Um valor booleano que indica se o vértice está no formato correto.
-        '''
+        """
         return vertice != '' and vertice.count(Grafo.SEPARADOR_ARESTA) == 0
 
     def existeVertice(self, vertice=''):
@@ -112,13 +113,13 @@ class Grafo:
         else:
             ArestaInvalidaException('A aresta ' + self.A[a] + ' é inválida')
 
-
     """
         ======================================================
        ||           ##### minhas funções #####               ||
         ======================================================
     """
-# roteiro 1
+
+    # roteiro 1
     def vertices_nao_adjacentes(self):
         vertices = self.N
         arestas = self.A.values()
@@ -198,7 +199,7 @@ class Grafo:
 
         return True
 
-# roteiro 2
+    # roteiro 2
     def buscar_profundidade_dfs(self, raiz, dfs=[]):
         if raiz not in self.N:
             return None
@@ -220,8 +221,7 @@ class Grafo:
             return aux
         return dfs
 
-
-# roteiro 3
+    # roteiro 3
     def ciclo(self):
 
         av = self.A.items()  # Contém chave de ligação entre aresta e vertice
@@ -283,7 +283,6 @@ class Grafo:
                 else:
                     return False
 
-
     def ha_ciclo(self):
 
         ha_ciclo = self.ciclo()  # Usa ciclo com auxiliar nas funções de verificar se tem ou não ciclo
@@ -297,7 +296,6 @@ class Grafo:
                     lista_ciclo.append(e)  # Começa adicionar elementos
             return lista_ciclo
         return False
-
 
     def caminho_entre_dois(self, x, y):
 
@@ -369,7 +367,6 @@ class Grafo:
                     else:
                         return False
 
-
     def caminho(self, n):
 
         vertices_ligados = self.N
@@ -380,7 +377,6 @@ class Grafo:
                 if (n * 2 + 1 == len(av)):
                     return av
         return False
-
 
     def conexo(self):
 
@@ -395,13 +391,9 @@ class Grafo:
                     return False
         return True
 
-
     """
     ##### fim das minhas funções #####
     """
-
-
-
 
     def __str__(self):
         '''
