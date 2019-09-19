@@ -222,7 +222,6 @@ class Grafo:
 
 
 
-
     ### Meus codigos
 
     def vertices_nao_adjacentes(self):
@@ -254,9 +253,6 @@ class Grafo:
                 if i == indice or j == indice:
                     soma += self.M[i][j]
 
-
-
-
         return soma
 
 
@@ -268,6 +264,21 @@ class Grafo:
         return False
 
 
+    def arestas_sobre_vertice(self, v):
+        lista_arestas = []
+
+        index = self.N.index(v)
+        for i in range(len(self.M)):
+            for j in range(i, len(self.M)):
+                if i == index and self.M[i][j] > 0:
+                    for l in range(self.M[i][j]):
+                        lista_arestas.append(v + '-' + self.N[j])
+                if j == index and self.M[i][j] > 0:
+                    for k in range(self.M[i][j]):
+                        lista_arestas.append(self.N[i] + '-' + v)
+        return lista_arestas
+
+
     def eh_completo(self):
         for i in range(len(self.M)):
             for j in range(i + 1, len(self.M)):
@@ -275,7 +286,9 @@ class Grafo:
                     return False
         return True
 
+
     ### Fim dos meus codigos
+
 
     def __str__(self):
         '''

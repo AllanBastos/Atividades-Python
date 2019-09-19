@@ -18,9 +18,6 @@ arestas = {'a1': 'J-C', 'a2': 'C-E', 'a3': 'C-E', 'a4': 'C-P', 'a5': 'C-P', 'a6'
 
 paraiba = G(vertices, arestas)
 
-
-
-
-print(paraiba.grau("C"))
-print(g_p.grau("C"))
 print(g_p)
+print(paraiba.arestas_sobre_vertice("M"))
+print(g_p.arestas_sobre_vertice("M"))
