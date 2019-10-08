@@ -15,7 +15,7 @@
 
 <!-- Screenshot -->
 <p align="center">
-  <img src="screenshots/Grafo_python.png" />
+  <img src="https://github.com/GuilhermeEsdras/Grafos/blob/master/em%20Python/screenshots/Grafo_python.png" />
 </p>
 
 <!-- Subtítulo -->
