@@ -1,6 +1,6 @@
 <!-- Gif -->
 <p align="center">
-  <img src="https://raw.githubusercontent.com/GuilhermeEsdras/Grafos/master/images/graph.gif0">
+  <img src="https://raw.githubusercontent.com/GuilhermeEsdras/Grafos/master/images/graph.gif">
 </p>
 
 <!-- Título do Repô -->
