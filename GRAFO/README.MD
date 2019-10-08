@@ -1,6 +1,6 @@
 <!-- Gif -->
 <p align="center">
-  <img src="https://raw.githubusercontent.com/GuilhermeEsdras/Grafos/master/images/graph.gif" width="90"
+  <img src="https://raw.githubusercontent.com/GuilhermeEsdras/Grafos/master/images/graph.gif" width="150"
 
 </p>
 
