@@ -23,7 +23,7 @@ Pode-se obter apenas os
 <a href="https://github.com/AllanBastos/Atividades-Python/archive/master.zip">códigos</a> 
 ou, alternativamente, utilizar o 
 <a href="https://git-scm.com/">Git</a> 
-para clonar todo o repositório funcional e seu histórico de versões:
+para clonar todo o repositório funcional:
 
 <code> $ git clone https://github.com/AllanBastos/Atividades-Python.git
 </code>
