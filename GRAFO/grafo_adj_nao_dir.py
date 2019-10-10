@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+from copy import deepcopy
 
 class VerticeInvalidoException(Exception):
     pass
@@ -278,6 +278,12 @@ class Grafo:
                         lista_arestas.append(self.N[i] + '-' + v)
         return lista_arestas
 
+    def conexo(self):
+        vertice = self.N[0]
+        for i in self.N[1::]:
+            if not self.caminho_entre_dois(vertice, i, []):
+                return False
+        return True
 
     def eh_completo(self):
         for i in range(len(self.M)):
@@ -286,6 +292,74 @@ class Grafo:
                     return False
         return True
 
+    def caminho_euleriano(self):
+        if not self.conexo():
+            return []
+
+        impar = 0
+        vertice_impar = []
+        # for i in (self.N):
+        #     if self.grau(i) % 2 != 0:
+        #         impar += 1
+        #         vertice_impar.append(i)
+        #
+        # if impar == 0 or impar == 2:
+        for v in self.N:
+            caminho = self.procurar_caminho_euleriano(v, [], [])
+            if caminho != []:
+                caminho.append(v)
+                return caminho
+
+        return []
+
+    def matriz_vazia(self):
+        for vertice in self.N:
+            if (self.grau(vertice) > 0):
+                return False
+        return True
+
+    def procurar_caminho_euleriano(self, v, caminho, visitados):
+        visitados.append(v)
+        vertices = self.vertices_adjacentes_euleriano(v, visitados)
+        matriz = self.M
+
+        if self.matriz_vazia() and vertices == []:
+            return True
+
+        for i in vertices:
+            indice1 = self.N.index(v)
+            indice2 = self.N.index(i)
+            if (indice1 > indice2):
+                aux = indice2
+                indice2 = indice1
+                indice1 = aux
+
+            matriz[indice1][indice2] -= 1
+            aresta = v + self.SEPARADOR_ARESTA + i
+
+            if (self.procurar_caminho_euleriano(i, caminho, visitados)):
+                caminho.append(i)
+                caminho.append(aresta)
+            else:
+                matriz[indice1][indice2] += 1
+
+        return []
+
+    def vertices_adjacentes_euleriano(self, vertice, visitados):
+        vertices = []
+        index = self.N.index(vertice) + 1
+
+        for indice_1 in range(index):
+            for indice_2 in range(indice_1, len(self.M)):
+                if (self.M[indice_1][indice_2] > 0 and index - 1 in (indice_1, indice_2)):
+                    v1, v2 = self.N[indice_1], self.N[indice_2]
+                    if (v1 != vertice and (v1 not in visitados or self.grau(
+                            v1) > 0)):
+                        vertices.append(v1)
+                    elif (v2 not in visitados or self.grau(v2) > 0):
+                        vertices.append(v2)
+
+        return vertices
 
     ### Fim dos meus codigos
 
@@ -317,9 +391,29 @@ class Grafo:
 
         return grafo_str
 
+    def caminho_entre_dois(self, v1, v2, visitados=[]):
+        if (self.N.index(v1) > self.N.index(
+                v2)):  # Já que o grafo não é direcionado então 'J-Z' == 'Z-J' e o índice de v1 é sempre <= ao índice de v2
+            aux = v2  # já que apenas da diagonal principal para cima é considerada na matriz de adjacência para grafos não direcionados.
+            v2 = v1
+            v1 = aux
 
+        visitados.append(v1)
+        ind_1 = self.N.index(v1)
+        ind_2 = self.N.index(v2)
 
+        if (self.M[ind_1][ind_2] > 0):
+            return True
 
+        vertices = self.vertices_adjacentes_euleriano(v1, visitados)
+        if (vertices == []):
+            return False
 
+        if (self.grau(v1) == 0 or self.grau(v2) == 0):
+            return False
 
+        for vertice in vertices:
+            if (self.caminho_entre_dois(vertice, v2, visitados)):
+                return True
 
+        return False
