@@ -1,5 +1,3 @@
-from copy import deepcopy
-
 class VerticeInvalidoException(Exception):
     pass
 
@@ -224,6 +222,43 @@ class Grafo:
 
     ### Meus codigos
 
+    def __copy(self, Matriz):
+        aux = []
+        for i in range(len(Matriz)):
+            aux.append([])
+            for p in range(len(Matriz[i])):
+                aux[i].append(Matriz[i][p])
+        return aux
+
+
+    def caminho_entre_dois(self, v1, v2, visitados=[]):
+        if (self.N.index(v1) > self.N.index(
+                v2)):  # Já que o grafo não é direcionado então 'J-Z' == 'Z-J' e o índice de v1 é sempre <= ao índice de v2
+            aux = v2  # já que apenas da diagonal principal para cima é considerada na matriz de adjacência para grafos não direcionados.
+            v2 = v1
+            v1 = aux
+
+        visitados.append(v1)
+        ind_1 = self.N.index(v1)
+        ind_2 = self.N.index(v2)
+
+        if (self.M[ind_1][ind_2] > 0):
+            return True
+
+        vertices = self.vertices_adjacentes_euleriano(v1, visitados)
+        if (vertices == []):
+            return False
+
+        if (self.grau(v1) == 0 or self.grau(v2) == 0):
+            return False
+
+        for vertice in vertices:
+            if (self.caminho_entre_dois(vertice, v2, visitados)):
+                return True
+
+        return False
+
+
     def vertices_nao_adjacentes(self):
         vertives_n_adj = []
         matriz = self.M
@@ -298,19 +333,21 @@ class Grafo:
 
         impar = 0
         vertice_impar = []
-        # for i in (self.N):
-        #     if self.grau(i) % 2 != 0:
-        #         impar += 1
-        #         vertice_impar.append(i)
-        #
-        # if impar == 0 or impar == 2:
-        for v in self.N:
-            caminho = self.procurar_caminho_euleriano(v, [], [])
-            if caminho != []:
-                caminho.append(v)
-                return caminho
+        for i in (self.N):
+            if self.grau(i) % 2 != 0:
+                impar += 1
+                vertice_impar.append(i)
+
+        if impar == 0 or impar == 2:
+            matriz = self.M[:]
+            for v in self.N:
+                caminho = self.procurar_caminho_euleriano(v, [], [], matriz)
+                if caminho != []:
+                    caminho.append(v)
+                    return caminho
 
         return []
+
 
     def matriz_vazia(self):
         for vertice in self.N:
@@ -318,10 +355,10 @@ class Grafo:
                 return False
         return True
 
-    def procurar_caminho_euleriano(self, v, caminho, visitados):
+    def procurar_caminho_euleriano(self, v, caminho, visitados, matriz):
         visitados.append(v)
         vertices = self.vertices_adjacentes_euleriano(v, visitados)
-        matriz = self.M
+
 
         if self.matriz_vazia() and vertices == []:
             return True
@@ -337,9 +374,10 @@ class Grafo:
             matriz[indice1][indice2] -= 1
             aresta = v + self.SEPARADOR_ARESTA + i
 
-            if (self.procurar_caminho_euleriano(i, caminho, visitados)):
+            if (self.procurar_caminho_euleriano(i, caminho, visitados, matriz)):
                 caminho.append(i)
                 caminho.append(aresta)
+                return caminho
             else:
                 matriz[indice1][indice2] += 1
 
@@ -391,29 +429,3 @@ class Grafo:
 
         return grafo_str
 
-    def caminho_entre_dois(self, v1, v2, visitados=[]):
-        if (self.N.index(v1) > self.N.index(
-                v2)):  # Já que o grafo não é direcionado então 'J-Z' == 'Z-J' e o índice de v1 é sempre <= ao índice de v2
-            aux = v2  # já que apenas da diagonal principal para cima é considerada na matriz de adjacência para grafos não direcionados.
-            v2 = v1
-            v1 = aux
-
-        visitados.append(v1)
-        ind_1 = self.N.index(v1)
-        ind_2 = self.N.index(v2)
-
-        if (self.M[ind_1][ind_2] > 0):
-            return True
-
-        vertices = self.vertices_adjacentes_euleriano(v1, visitados)
-        if (vertices == []):
-            return False
-
-        if (self.grau(v1) == 0 or self.grau(v2) == 0):
-            return False
-
-        for vertice in vertices:
-            if (self.caminho_entre_dois(vertice, v2, visitados)):
-                return True
-
-        return False
