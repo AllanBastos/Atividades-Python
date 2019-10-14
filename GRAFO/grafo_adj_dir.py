@@ -38,10 +38,11 @@ class Grafo:
             for k in range(len(V)):
                 M.append(list())
                 for l in range(len(V)):
-                    if k>l:
-                        M[k].append('-')
-                    else:
-                        M[k].append(0)
+                    M[k].append(0)
+                    # if k>l:
+                    #     M[k].append('-')
+                    # else:
+                    #     M[k].append(0)
 
 
         if len(M) != len(V):
@@ -53,12 +54,12 @@ class Grafo:
 
         for i in range(len(V)):
             for j in range(len(V)):
-                '''
-                Verifica se os índices passados como parâmetro representam um elemento da matriz abaixo da diagonal principal.
-                Além disso, verifica se o referido elemento é um traço "-". Isso indica que a matriz é não direcionada e foi construída corretamente.
-                '''
-                if i>j and not(M[i][j] == '-'):
-                    raise MatrizInvalidaException('A matriz não representa uma matriz não direcionada')
+                # '''
+                # Verifica se os índices passados como parâmetro representam um elemento da matriz abaixo da diagonal principal.
+                # Além disso, verifica se o referido elemento é um traço "-". Isso indica que a matriz é não direcionada e foi construída corretamente.
+                # '''
+                # if i>j and not(M[i][j] == '-'):
+                #     raise MatrizInvalidaException('A matriz não representa uma matriz não direcionada')
 
 
                 aresta = V[i] + Grafo.SEPARADOR_ARESTA + V[j]
@@ -194,10 +195,11 @@ class Grafo:
         if self.arestaValida(a):
             i_a1 = self.__indice_primeiro_vertice_aresta(a)
             i_a2 = self.__indice_segundo_vertice_aresta(a)
-            if i_a1 < i_a2:
-                self.M[i_a1][i_a2] += 1
-            else:
-                self.M[i_a2][i_a1] += 1
+            # if i_a1 < i_a2:
+            #     self.M[i_a1][i_a2] += 1
+            # else:
+            #     self.M[i_a2][i_a1] += 1
+            self.M[i_a1][i_a2] += 1
         else:
             raise ArestaInvalidaException('A aresta {} é inválida'.format(a))
 
@@ -211,10 +213,11 @@ class Grafo:
             if self.existeAresta(a):
                 i_a1 = self.__indice_primeiro_vertice_aresta(a)
                 i_a2 = self.__indice_segundo_vertice_aresta(a)
-                if i_a1 < i_a2:
-                    self.M[i_a1][i_a2] -= 1
-                else:
-                    self.M[i_a2][i_a1] -= 1
+                # if i_a1 < i_a2:
+                #     self.M[i_a1][i_a2] -= 1
+                # else:
+                #    self.M[i_a2][i_a1] -= 1
+                self.M[i_a1][i_a2] -= 1
         else:
             raise ArestaInvalidaException('A aresta {} é inválida'.format(a))
 
@@ -284,7 +287,7 @@ class Grafo:
         soma = 0
 
         for i in range(len(self.M)):
-            for j in range(i, len(self.M)):
+            for j in range(len(self.M)):
                 if i == indice or j == indice:
                     soma += self.M[i][j]
 
@@ -304,7 +307,7 @@ class Grafo:
 
         index = self.N.index(v)
         for i in range(len(self.M)):
-            for j in range(i, len(self.M)):
+            for j in range(len(self.M)):
                 if i == index and self.M[i][j] > 0:
                     for l in range(self.M[i][j]):
                         lista_arestas.append(v + '-' + self.N[j])
@@ -322,7 +325,7 @@ class Grafo:
 
     def eh_completo(self):
         for i in range(len(self.M)):
-            for j in range(i + 1, len(self.M)):
+            for j in range(len(self.M)):
                 if self.M[i][j] == 0:
                     return False
         return True
@@ -400,7 +403,39 @@ class Grafo:
         return vertices
 
 
+    def warshall(self):
+        E = self.__copy(self.M)
+
+        for i in range(len(E)):
+            for j in range(len(E)):
+                if E[j][i] > 0:
+                    for k in range(len(E)):
+                        E[j][k] = max(E[j][k], E[i][k])
+
+        return self.toString(E)
+
+
+    def toString(self, M):
+        espaco = ' ' * (self.__maior_vertice)
+
+        grafo_str = espaco + ' '
+
+        for v in range(len(self.N)):
+            grafo_str += self.N[v]
+            if v < (len(self.N) - 1):  # Só coloca o espaço se não for o último vértice
+                grafo_str += ' '
+
+        grafo_str += '\n'
+
+        for l in range(len(M)):
+            grafo_str += self.N[l] + ' '
+            for c in range(len(M)):
+                grafo_str += str(M[l][c]) + ' '
+            grafo_str += '\n'
+
+        return grafo_str
     ### Fim dos meus codigos
+
 
 
     def __str__(self):
