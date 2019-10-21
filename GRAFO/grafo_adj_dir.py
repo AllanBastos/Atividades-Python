@@ -288,7 +288,7 @@ class Grafo:
 
         for i in range(len(self.M)):
             for j in range(len(self.M)):
-                if i == indice or j == indice:
+                if i == indice:
                     soma += self.M[i][j]
 
         return soma
@@ -324,9 +324,11 @@ class Grafo:
         return True
 
     def eh_completo(self):
-        for i in range(len(self.M)):
-            for j in range(len(self.M)):
-                if self.M[i][j] == 0:
+        w = self.warshall()
+
+        for i in range(len(w.M)):
+            for j in range(len(w.M)):
+                if w.M[i][j] == 0:
                     return False
         return True
 
@@ -412,28 +414,36 @@ class Grafo:
                     for k in range(len(E)):
                         E[j][k] = max(E[j][k], E[i][k])
 
-        return self.toString(E)
+        w = Grafo(self.N)
+
+        for i in range(len(E)):
+            for j in range(len(E)):
+                if E[i][j] > 0:
+                    w.adicionaAresta(self.N[i] + self.SEPARADOR_ARESTA + self.N[j])
 
 
-    def toString(self, M):
-        espaco = ' ' * (self.__maior_vertice)
+        return w
 
-        grafo_str = espaco + ' '
 
-        for v in range(len(self.N)):
-            grafo_str += self.N[v]
-            if v < (len(self.N) - 1):  # Só coloca o espaço se não for o último vértice
-                grafo_str += ' '
-
-        grafo_str += '\n'
-
-        for l in range(len(M)):
-            grafo_str += self.N[l] + ' '
-            for c in range(len(M)):
-                grafo_str += str(M[l][c]) + ' '
-            grafo_str += '\n'
-
-        return grafo_str
+    # def toString(self, M):
+    #     espaco = ' ' * (self.__maior_vertice)
+    #
+    #     grafo_str = espaco + ' '
+    #
+    #     for v in range(len(self.N)):
+    #         grafo_str += self.N[v]
+    #         if v < (len(self.N) - 1):  # Só coloca o espaço se não for o último vértice
+    #             grafo_str += ' '
+    #
+    #     grafo_str += '\n'
+    #
+    #     for l in range(len(M)):
+    #         grafo_str += self.N[l] + ' '
+    #         for c in range(len(M)):
+    #             grafo_str += str(M[l][c]) + ' '
+    #         grafo_str += '\n'
+    #
+    #     return grafo_str
     ### Fim dos meus codigos
 
 

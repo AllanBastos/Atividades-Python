@@ -1,5 +1,5 @@
 import unittest
-from grafo_adj_nao_dir import Grafo
+from grafo_adj_dir import Grafo
 
 class TestGrafo(unittest.TestCase):
 
