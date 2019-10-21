@@ -61,26 +61,11 @@ g_d.adicionaAresta('C-D')
 g_d.adicionaAresta('C-E')
 g_d.adicionaAresta('D-E')
 
+l = g_d.warshall()
+print(l)
 
-
-#
-# print(g_e)
-# print(g_e.caminho_euleriano())
-# print(g_e)
-#
-
-# #
-# print("Grafo 1\n",g_1)
-# print("Grafo 1 com warshall\n",g_1.warshall())
-# #
-# print("Grafo D\n",g_d)
-# print("Grafo D com warshall\n", g_d.warshall())
-
-# print("Grafo Paraiba\n", g_p)
-# print(g_p.vertices_nao_adjacentes())
-#
-g_l = G(['A', 'B'])
-g_l.adicionaAresta("A-B")
-g_l.adicionaAresta("B-A")
-print("Grafo Paraiba\n", g_l)
-print(g_l.eh_completo())
+print(l.conexo())
+print(l.eh_completo())
+print(l.ha_paralelas())
+print(l.ha_laco())
+print(l.conexo())
