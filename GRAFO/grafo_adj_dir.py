@@ -324,13 +324,21 @@ class Grafo:
         return True
 
     def eh_completo(self):
-        w = self.warshall()
-
-        for i in range(len(w.M)):
-            for j in range(len(w.M)):
-                if w.M[i][j] == 0:
-                    return False
+        # w = self.warshall()
+        #
+        # for i in range(len(w.M)):
+        #     for j in range(len(w.M)):
+        #         if w.M[i][j] == 0:
+        #             return False
+        # return True
+        m = self.M
+        for i in range(len(m)):
+            if (sum(m[i]) + 1) < len(self.N):
+                return False
         return True
+
+
+
 
     def caminho_euleriano(self):
         if not self.conexo():

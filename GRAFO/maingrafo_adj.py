@@ -1,4 +1,4 @@
-from grafo_adj_nao_dir import Grafo
+# from grafo_adj_nao_dir import Grafo
 from grafo_adj_dir import Grafo as G
 from grafo_gabriel import Grafo as G1
 
@@ -24,18 +24,18 @@ vertices1 = ['A', 'B', 'C', 'D', 'E', 'F']
 
 # print(vertices1)
 
-g_e = Grafo(vertices1)
-g_e.adicionaAresta('A-B')
-g_e.adicionaAresta('B-C')
-g_e.adicionaAresta('C-D')
-g_e.adicionaAresta('D-E')
-g_e.adicionaAresta('E-A')
-g_e.adicionaAresta('E-F')
-g_e.adicionaAresta('E-C')
-g_e.adicionaAresta('F-D')
-g_e.adicionaAresta('F-C')
-g_e.adicionaAresta('F-B')
-g_e.adicionaAresta('D-B')
+# g_e = Grafo(vertices1)
+# g_e.adicionaAresta('A-B')
+# g_e.adicionaAresta('B-C')
+# g_e.adicionaAresta('C-D')
+# g_e.adicionaAresta('D-E')
+# g_e.adicionaAresta('E-A')
+# g_e.adicionaAresta('E-F')
+# g_e.adicionaAresta('E-C')
+# g_e.adicionaAresta('F-D')
+# g_e.adicionaAresta('F-C')
+# g_e.adicionaAresta('F-B')
+# g_e.adicionaAresta('D-B')
 
 g_1 = G(vertices1)
 g_1.adicionaAresta('A-B')
@@ -64,8 +64,26 @@ g_d.adicionaAresta('D-E')
 l = g_d.warshall()
 print(l)
 
-print(l.conexo())
-print(l.eh_completo())
-print(l.ha_paralelas())
-print(l.ha_laco())
-print(l.conexo())
+print("É conexo? ", l.conexo())
+print("É completo? ", l.eh_completo())
+print("Tem paralelas? ", l.ha_paralelas())
+print("Tem laço? ", l.ha_laco())
+
+l = G(["A", "B", "C"])
+l.adicionaAresta('A-B')
+l.adicionaAresta('A-C')
+l.adicionaAresta('B-A')
+l.adicionaAresta('B-C')
+l.adicionaAresta('C-B')
+l.adicionaAresta('C-A')
+# l.adicionaAresta('C-A')
+# l.adicionaAresta('C-C')
+
+print(l)
+print("É conexo? ", l.conexo())
+print("É completo? ", l.eh_completo())
+print("Tem paralelas? ", l.ha_paralelas())
+print("Tem laço? ", l.ha_laco())
+
+
+
