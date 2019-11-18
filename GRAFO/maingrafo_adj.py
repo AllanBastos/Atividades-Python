@@ -1,9 +1,8 @@
 # from grafo_adj_nao_dir import Grafo
 from grafo_adj_dir import Grafo as G
-from grafo_gabriel import Grafo as G1
 
 g_p = G(['J', 'C', 'E', 'P', 'M', 'T', 'Z'])
-#{'a1':'J-C', 'a2':'C-E', 'a3':'C-E', 'a4':'C-P', 'a5':'C-P', 'a6':'C-M', 'a7':'C-T', 'a8':'M-T', 'a9':'T-Z'}
+# {'a1':'J-C', 'a2':'C-E', 'a3':'C-E', 'a4':'C-P', 'a5':'C-P', 'a6':'C-M', 'a7':'C-T', 'a8':'M-T', 'a9':'T-Z'}
 g_p.adicionaAresta('C-E')
 g_p.adicionaAresta('C-E')
 g_p.adicionaAresta('C-P')
@@ -50,7 +49,6 @@ g_1.adicionaAresta('F-C')
 g_1.adicionaAresta('F-B')
 g_1.adicionaAresta('D-B')
 
-
 g_d = G(['A', 'B', 'C', 'D', 'E'])
 g_d.adicionaAresta('A-B')
 g_d.adicionaAresta('A-C')
@@ -61,13 +59,13 @@ g_d.adicionaAresta('C-D')
 g_d.adicionaAresta('C-E')
 g_d.adicionaAresta('D-E')
 
-l = g_d.warshall()
-print(l)
+# w = g_d.warshall()
+# print(w)
 
-print("É conexo? ", l.conexo())
-print("É completo? ", l.eh_completo())
-print("Tem paralelas? ", l.ha_paralelas())
-print("Tem laço? ", l.ha_laco())
+# print("É conexo? ", l.conexo())
+# print("É completo? ", l.eh_completo())
+# print("Tem paralelas? ", l.ha_paralelas())
+# print("Tem laço? ", l.ha_laco())
 
 l = G(["A", "B", "C"])
 l.adicionaAresta('A-B')
@@ -76,14 +74,32 @@ l.adicionaAresta('B-A')
 l.adicionaAresta('B-C')
 l.adicionaAresta('C-B')
 l.adicionaAresta('C-A')
-# l.adicionaAresta('C-A')
-# l.adicionaAresta('C-C')
+l.adicionaAresta('C-A')
+l.adicionaAresta('C-C')
 
-print(l)
-print("É conexo? ", l.conexo())
-print("É completo? ", l.eh_completo())
-print("Tem paralelas? ", l.ha_paralelas())
-print("Tem laço? ", l.ha_laco())
+# print(l)
+# print("É conexo? ", l.conexo())
+# print("É completo? ", l.eh_completo())
+# print("Tem paralelas? ", l.ha_paralelas())
+# print("Tem laço? ", l.ha_laco())
+# #
+# print(l.getPesos())
 
+d = G()
+d.adicionaVertice("A")
+d.adicionaVertice("C")
+d.adicionaVertice("B")
+d.adicionaVertice("E")
+d.adicionaVertice("J")
+d.adicionaAresta("A-C")
+d.adicionaAresta("A-B")
+d.adicionaAresta("B-J")
+d.adicionaAresta("B-E")
+d.adicionaAresta("C-J")
+d.adicionaAresta("E-J")
+d.adicionaAresta("C-A")
+d.adicionaVertice("D")
 
-
+d.setPeso("C-J", 1)
+print(d.dijkstra("A", "J"))
+print(d)

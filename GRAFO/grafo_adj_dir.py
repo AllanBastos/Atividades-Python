@@ -1,3 +1,6 @@
+import sys
+
+
 class VerticeInvalidoException(Exception):
     pass
 
@@ -7,11 +10,15 @@ class ArestaInvalidaException(Exception):
 class MatrizInvalidaException(Exception):
     pass
 
+class ValorInvalidoException(Exception):
+    pass
+
 class Grafo:
 
     QTDE_MAX_SEPARADOR = 1
     SEPARADOR_ARESTA = '-'
     __maior_vertice = 0
+    __PESOS = {}
 
     def __init__(self, V=None, M=None):
         '''
@@ -21,10 +28,13 @@ class Grafo:
         :param V: Uma matriz de adjacência que guarda as arestas do grafo. Cada entrada da matriz tem um inteiro que indica a quantidade de arestas que ligam aqueles vértices
         '''
 
+
         if V == None:
             V = list()
         if M == None:
             M = list()
+
+        self.__PESOS = {}
 
         for v in V:
             if not(Grafo.verticeValido(v)):
@@ -180,7 +190,7 @@ class Grafo:
             for k in range(len(self.N)):
                 if k != len(self.N) -1:
                     self.M[k].append(0) # adiciona os elementos da coluna do vértice
-                    self.M[self.N.index(v)].append('-') # adiciona os elementos da linha do vértice
+                    self.M[self.N.index(v)].append(0) # adiciona os elementos da linha do vértice
                 else:
                     self.M[self.N.index(v)].append(0)  # adiciona um zero no último elemento da linha
         else:
@@ -200,6 +210,7 @@ class Grafo:
             # else:
             #     self.M[i_a2][i_a1] += 1
             self.M[i_a1][i_a2] += 1
+            self.__PESOS[a] = 1
         else:
             raise ArestaInvalidaException('A aresta {} é inválida'.format(a))
 
@@ -274,6 +285,7 @@ class Grafo:
 
         return vertives_n_adj
 
+
     def ha_laco(self):
         for i in range(len(self.M)):
             if self.M[i][i] > 0:
@@ -316,12 +328,14 @@ class Grafo:
                         lista_arestas.append(self.N[i] + '-' + v)
         return lista_arestas
 
+
     def conexo(self):
         vertice = self.N[0]
         for i in self.N[1::]:
             if not self.caminho_entre_dois(vertice, i, []):
                 return False
         return True
+
 
     def eh_completo(self):
         # w = self.warshall()
@@ -336,8 +350,6 @@ class Grafo:
             if (sum(m[i]) + 1) < len(self.N):
                 return False
         return True
-
-
 
 
     def caminho_euleriano(self):
@@ -368,6 +380,7 @@ class Grafo:
                 return False
         return True
 
+
     def procurar_caminho_euleriano(self, v, caminho, visitados, matriz):
         visitados.append(v)
         vertices = self.vertices_adjacentes_euleriano(v, visitados)
@@ -395,6 +408,7 @@ class Grafo:
                 matriz[indice1][indice2] += 1
 
         return []
+
 
     def vertices_adjacentes_euleriano(self, vertice, visitados):
         vertices = []
@@ -433,27 +447,96 @@ class Grafo:
         return w
 
 
-    # def toString(self, M):
-    #     espaco = ' ' * (self.__maior_vertice)
-    #
-    #     grafo_str = espaco + ' '
-    #
-    #     for v in range(len(self.N)):
-    #         grafo_str += self.N[v]
-    #         if v < (len(self.N) - 1):  # Só coloca o espaço se não for o último vértice
-    #             grafo_str += ' '
-    #
-    #     grafo_str += '\n'
-    #
-    #     for l in range(len(M)):
-    #         grafo_str += self.N[l] + ' '
-    #         for c in range(len(M)):
-    #             grafo_str += str(M[l][c]) + ' '
-    #         grafo_str += '\n'
-    #
-    #     return grafo_str
-    ### Fim dos meus codigos
+    def dijkstra(self, u, v):
+        vertices = self.N
+        MAX = sys.maxsize
+        b = {}
+        f = {}
+        p = {}
+        peso = self.__PESOS
+        for i in vertices:
+            b[i] = MAX
+            f[i] = 0
+            p[i] = None
 
+        b[u] = 0
+        f[u] = 1
+
+        w = u
+
+        while True:
+            if w == v:
+                caminho = []
+                temp = w
+                while temp != u:
+                    caminho.append(p[temp])
+                    temp = p[temp]
+                caminho.reverse()
+                return caminho
+
+            adj = self.verticesAdj(w)
+
+            for i in adj:
+                dis = b[w] + peso["{}-{}".format(w, i)]
+                if f[i] == 0 and b[i] > dis:
+                    b[i] = dis
+                    p[i] = w
+
+            existe_r = False
+
+            betas = []
+            for i in vertices:
+                if f[i] == 0:
+                    betas.append(b[i])
+
+            for i in vertices:
+                if f[i] == 0 and b[i] < MAX and b[i] == min(betas):
+                    existe_r = True
+                    f[i] = 1
+                    w = i
+                    break
+
+            if not existe_r:
+                return "Caminho Inexistente"
+
+
+    def VerificarAresta(self, A):
+        if self.arestaValida(A):
+            v = self.N
+            indexa = v.index(A[0])
+            indexb = v.index(A[2])
+            for i in range(len(self.M)):
+                for j in range(len(self.M)):
+                    if self.M[indexa][indexb] > 0:
+                        return True
+                    else:
+                        raise ArestaInvalidaException("A aresta {} não existe!".format(A))
+        raise ArestaInvalidaException("A aresta {} é invalida!".format(A))
+
+
+    def setPeso(self, a, p):
+        if p < 1:
+            raise ValorInvalidoException('O valor {} é invalido'.format(p))
+        if self.VerificarAresta(a):
+            self.__PESOS[a] = p
+
+
+    def getPesos(self):
+        return self.__PESOS
+
+
+    def verticesAdj(self, v):
+        matrix = self.M
+        vertice = self.N
+        index = vertice.index(v)
+        adj = []
+        for i in range(len(matrix)):
+            if i == index:
+                for j in range(len(matrix[i])):
+                    if matrix[i][j] > 0:
+                        adj.append(vertice[j])
+
+        return adj
 
 
     def __str__(self):
@@ -482,4 +565,7 @@ class Grafo:
             grafo_str += '\n'
 
         return grafo_str
+
+
+
 
