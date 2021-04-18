@@ -1,6 +1,6 @@
 <!-- Logo da Linguagem -->
 <p align="center">
-    <img align="center" src="https://http2.mlstatic.com/curso-de-python-3-D_NQ_NP_724590-MLB29230265467_012019-F.jpg" alt="Python Logo" width="150">
+    <img align="center" src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fgithub.com%2Fpython%2Fcpython&psig=AOvVaw0nyY_nABp4wPLKvP6-z8ue&ust=1618876467614000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCIirwPj-iPACFQAAAAAdAAAAABAD" alt="Python Logo" width="150">
 </p>
 
 
